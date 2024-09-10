@@ -1,0 +1,30 @@
+﻿@model List<User>;
+
+<table id="userTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">User Name</th>
+            <th scope="row">Email</th>
+            <th scope="row">Mobile Number</th>
+            <th scope="row">Role</th>
+            <th scope="row">Status</th>
+            <th scope="row">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in @Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.EmailAddress</td>
+                <td>@user.MobileNumber</td>
+                <td>@user.Role</td>
+                <td class="@(user.Status ?"text-success":"text-danger")">@(user.Status ? "Active" : "In Active")</td>
+                <td class="text-center cursor-pointer">
+                    <i class="bi bi-pencil-fill fs-5" onclick="editUser(`@user.IdUser`)"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

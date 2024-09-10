@@ -1,0 +1,131 @@
+﻿@using InfoMed.Utils
+@model SponserDto
+@{
+    List<SponserTypeDto> sponserTypes = ViewBag.SponserTypes;
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h5 class="modal-title text-light fs-5" id="exampleModalLabel">Add Sponser</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="addEvent" id="addSponserForm" asp-action="AddSponser" asp-controller="Event" enctype="multipart/form-data">
+                <div class="modal-body">                   
+                    <div class="mb-3">
+                        <label for="">Sponser Type<i class="text-danger">*</i></label>
+                        <select name="SponsorType" asp-for="SponsorType"  class="form-select" required>
+                            <option value="">Select</option>
+                            @foreach (var types in sponserTypes)
+                            {
+                                <option value="@types.Name" selected="@(Model?.SponsorType?.Trim() == types.Name.Trim())">@types.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Sponsor Name<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" name="SponsorName" asp-for="SponsorName" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Sponser Text for icon</label>
+                        <input type="text" class="form-control" name="SponsorShowText" asp-for="SponsorShowText">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Order Number<i class="text-danger">*</i></label>
+                        <input type="number" id="OrderNumber" class="form-control p-2" asp-for="OrderNumber" name="OrderNumber" value="" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Sponser URl</label>
+                        <input type="text" id="SponsorUrl" class="form-control p-2" asp-for="SponsorUrl" name="SponsorUrl" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Sponser Logo<i class="text-danger">*</i></label>
+                        <input type="file" class="form-control" id="SponserLogoMap" name="SponserLogoMap" asp-for="SponserLogoMap" required>
+                        <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 120 KB</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" /
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    debugger;
+    $("#addSponserForm").on("submit", async function (event) {
+        debugger
+        event.preventDefault();
+        var form = document.getElementById('addSponserForm');
+        var formData = new FormData(form);
+        try {
+            let response = await fetch('/Event/AddSponser', {
+                method: 'POST',
+                body: formData
+            });
+            let data = await response.json();
+            if (data.success) {
+                // swal({
+                //     title: "Success",
+                //     text: `Sponsor Added successfully.`,
+                //     icon: "success",
+                // }).then(() => {
+                //     $('#exampleModal').modal('hide');
+                //     // Return a new promise to chain the next steps                    
+                // }).then(async () => {
+                $('#exampleModal').modal('hide');
+                    const id = data.idEvent;
+                    const idEventversion = data.idEventVersion;
+                    const URL = `/Event/EditEvent?id=${id}&idEventVersion=${idEventversion}&view=Sponsors`;
+                    let editResponse = await fetch(URL, {
+                        method: 'Get',
+                    });
+                    let editData = await editResponse.text();
+                    var parsedData = JSON.parse(editData);
+                    $("#root").html(parsedData.html);
+                // }).catch(error => {
+                //     console.error('Error:', error);
+                // });
+            } else {
+                swal({
+                    title: "Error",
+                    text: `Please Add Event Details.`,
+                    icon: "warning",
+                }).then(() => {
+                    $('#exampleModal').modal('hide');
+                });
+            }
+        } catch (error) {
+            debugger
+            console.error('Error:', error);
+            swal({
+                title: "Error",
+                text: `An error occurred.`,
+                icon: "error",
+            }).then(() => {
+                $('#exampleModal').modal('hide');
+            });
+        }
+    });
+    document.getElementById('SponserLogoMap').addEventListener('change', function () {
+        var file = this.files[0];
+        var fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.size > 120 * 1024) { // 120 KB in bytes
+            fileSizeError.style.display = 'block';
+            this.value = ''; // Clear the file input
+        } else {
+            fileSizeError.style.display = 'none';
+        }
+    });
+</script>

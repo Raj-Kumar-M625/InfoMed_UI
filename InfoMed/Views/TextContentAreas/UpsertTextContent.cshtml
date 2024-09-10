@@ -1,0 +1,87 @@
+﻿@model TextContentAreasDto;
+@using InfoMed.Utils;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+}
+<div class="modal fade" id="textContentModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdTextContentArea > 0 ? "Edit Text Content" : "Add Text Content")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="textContentForm">
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="ContentHeader" class="text-dark">Content Header Text<i class="text-danger">*</i></label>
+                            <input type="text" id="ContentHeader" class="form-control p-2" asp-for="ContentHeader" name="ContentHeader" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="OrderNumber" class="text-dark">Order Number<i class="text-danger">*</i></label>
+                            <input type="number" id="OrderNumber" class="form-control p-2" asp-for="OrderNumber" name="OrderNumber" required />
+                        </div>
+                    </div>
+                    <div class="row mt-2 content-center-row">
+                        <div class="col-md-12">
+                            <label for="summernote" class="text-dark">Content Text<i class="text-danger">*</i></label>
+                            <textarea id="editor" name="contentText"></textarea>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" id="IdTextContentArea" name="IdTextContentArea" hidden value="@(Model?.IdTextContentArea ?? 0)" />
+                    <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" />
+                    <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                    <input type="text" class="form-control" asp-for="Status" id="status" name="Status" hidden value="@(Model?.Status ?? true)" />
+                    <input type="text" class="form-control" hidden id="contentText" value="@Model?.ContentText" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#editor').summernote({
+        tabsize: 2,
+        height: 250,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150']
+    });
+
+    $("#editor").summernote('code', $("#contentText").val())
+
+
+    $("#textContentForm").on("submit", async function (event) {
+        event.preventDefault();
+        var id = parseInt($("#IdTextContentArea").val()) > 0
+        var form = document.getElementById("textContentForm")
+        var formData = new FormData(form)
+
+        const URL = id > 0 ? `/TextContentArea/EditTextContent?view=EventDetails` : `/TextContentArea/AddTextContent?view=EventDetails`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#textContentModal").modal('hide')
+                $("#root").html(data.html)
+                $("#dt-length-0").css("margin-right", "8px")
+            })
+    })
+</script>

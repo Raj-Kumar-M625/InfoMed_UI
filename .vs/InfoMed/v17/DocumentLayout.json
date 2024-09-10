@@ -1,0 +1,574 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\event\\eventhomepage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\event\\eventhomepage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\wwwroot\\assets\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\wwwroot\\assets\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\user\\users.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\user\\users.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\eventcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\eventcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\event\\event.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\event\\event.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\feescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\feescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\epicm\\AppData\\Local\\SourceServer\\4f9c6f1b67821d074facbd1afe4f1fd883badbdf92e3d6e05ffb61bf37d9f297\\src\\Mvc\\Mvc.Core\\src\\Infrastructure\\ActionMethodExecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\services\\implementation\\eventservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\services\\implementation\\eventservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\models\\sponserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\models\\sponserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\utils\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\utils\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\event\\_sponserlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\event\\_sponserlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\event\\_speakerlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\event\\_speakerlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\event\\termsconditions.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\event\\termsconditions.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\wwwroot\\js\\event.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\wwwroot\\js\\event.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\customer\\singleregistration.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\customer\\singleregistration.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\customer\\registeration.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\customer\\registeration.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\epicm\\AppData\\Local\\SourceServer\\010ab9f68d320a9741539a2c3c04050ffc7d001b081deddcb0bc7a34cf596876\\src\\Mvc\\Mvc.ViewFeatures\\src\\ViewExecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\payment\\_addpaymentpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\payment\\_addpaymentpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\schedule\\upsertschedule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\schedule\\upsertschedule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\wwwroot\\js\\textcontentareas.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\wwwroot\\js\\textcontentareas.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\fees\\_feeslist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\fees\\_feeslist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\wwwroot\\js\\fees.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\wwwroot\\js\\fees.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\textcontentareas\\textcontentareas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\textcontentareas\\textcontentareas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|c:\\users\\epicm\\desktop\\infomed_ui\\infomed_ui\\infomed\\services\\implementation\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6171649D-6B7A-45DD-9ABF-E2D7325DA8B3}|InfoMed\\InfoMed.csproj|solutionrelative:infomed\\services\\implementation\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EventHomePage.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\EventHomePage.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Event\\EventHomePage.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\EventHomePage.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Event\\EventHomePage.cshtml",
+              "ViewState": "AQIAACYBAAAAAAAAAAAAADYBAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-14T09:16:07.986Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Users.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\User\\Users.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\User\\Users.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\User\\Users.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\User\\Users.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-28T12:09:55.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EventController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\EventController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\EventController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\EventController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\EventController.cs",
+              "ViewState": "AQIAANoAAAAAAAAAAAAxwOwAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-28T11:40:45.646Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\AccountController.cs",
+              "ViewState": "AQIAACoAAAAAAAAAAAA1wDUAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-26T07:20:05.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAACIAAAAAAAAAAAAiwCoAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-26T06:40:35.564Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CustomerController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\CustomerController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\CustomerController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\CustomerController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\CustomerController.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAcwDUAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T09:46:41.61Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.css",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\assets\\css\\main.css",
+              "RelativeDocumentMoniker": "InfoMed\\wwwroot\\assets\\css\\main.css",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\assets\\css\\main.css",
+              "RelativeToolTip": "InfoMed\\wwwroot\\assets\\css\\main.css",
+              "ViewState": "AQIAANYEAAAAAAAAAIA1wO0EAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-07-18T05:51:07.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FeesController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\FeesController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\FeesController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\FeesController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\FeesController.cs",
+              "ViewState": "AQIAACEAAAAAAAAAAAA1wAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-28T11:44:58.722Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Home\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-28T12:07:27.669Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Event.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\Event.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Event\\Event.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\Event.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Event\\Event.cshtml",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAE0AAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T07:11:01.009Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\UserController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\UserController.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAA1wAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-28T12:00:00.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Program.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Program.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Program.cs",
+              "RelativeToolTip": "InfoMed\\Program.cs",
+              "ViewState": "AQIAAC8AAAAAAAAAAAAAADYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-11T04:53:21.729Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EventService.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Services\\Implementation\\EventService.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Services\\Implementation\\EventService.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Services\\Implementation\\EventService.cs",
+              "RelativeToolTip": "InfoMed\\Services\\Implementation\\EventService.cs",
+              "ViewState": "AQIAAGsBAAAAAAAAAAAvwIABAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-26T06:22:40.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ActionMethodExecutor.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\AppData\\Local\\SourceServer\\4f9c6f1b67821d074facbd1afe4f1fd883badbdf92e3d6e05ffb61bf37d9f297\\src\\Mvc\\Mvc.Core\\src\\Infrastructure\\ActionMethodExecutor.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\4f9c6f1b67821d074facbd1afe4f1fd883badbdf92e3d6e05ffb61bf37d9f297\\src\\Mvc\\Mvc.Core\\src\\Infrastructure\\ActionMethodExecutor.cs",
+              "ToolTip": "C:\\Users\\epicm\\AppData\\Local\\SourceServer\\4f9c6f1b67821d074facbd1afe4f1fd883badbdf92e3d6e05ffb61bf37d9f297\\src\\Mvc\\Mvc.Core\\src\\Infrastructure\\ActionMethodExecutor.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\4f9c6f1b67821d074facbd1afe4f1fd883badbdf92e3d6e05ffb61bf37d9f297\\src\\Mvc\\Mvc.Core\\src\\Infrastructure\\ActionMethodExecutor.cs",
+              "ViewState": "AQIAAI8AAAAAAAAAAADgv58AAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-19T09:54:19.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Home\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Dashboard.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Home\\Dashboard.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T07:14:00.658Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Session.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Utils\\Session.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Utils\\Session.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Utils\\Session.cs",
+              "RelativeToolTip": "InfoMed\\Utils\\Session.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAA4wB8AAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-26T07:14:47.526Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "SponserDto.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Models\\SponserDto.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Models\\SponserDto.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Models\\SponserDto.cs",
+              "RelativeToolTip": "InfoMed\\Models\\SponserDto.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAowA4AAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-28T09:06:32.179Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "_sponserList.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\_sponserList.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Event\\_sponserList.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\_sponserList.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Event\\_sponserList.cshtml",
+              "ViewState": "AQIAAHsAAAAAAAAAAEBkwF0AAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T09:19:50.773Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "_speakerList.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\_speakerList.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Event\\_speakerList.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\_speakerList.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Event\\_speakerList.cshtml",
+              "ViewState": "AQIAAIEAAAAAAAAAAEBkwJsAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T09:21:00.672Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "TermsConditions.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\TermsConditions.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Event\\TermsConditions.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Event\\TermsConditions.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Event\\TermsConditions.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T07:13:20.77Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Home\\Privacy.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T07:12:01.13Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Event.js",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\Event.js",
+              "RelativeDocumentMoniker": "InfoMed\\wwwroot\\js\\Event.js",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\Event.js",
+              "RelativeToolTip": "InfoMed\\wwwroot\\js\\Event.js",
+              "ViewState": "AQIAADsAAAAAAAAAAABbwFEAAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-07-07T06:10:41.831Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "SingleRegistration.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Customer\\SingleRegistration.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Customer\\SingleRegistration.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Customer\\SingleRegistration.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Customer\\SingleRegistration.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-19T07:34:24.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Registeration.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Customer\\Registeration.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Customer\\Registeration.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Customer\\Registeration.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Customer\\Registeration.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAA5AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-10T07:31:10.03Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "_FeesList.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Fees\\_FeesList.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Fees\\_FeesList.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Fees\\_FeesList.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Fees\\_FeesList.cshtml",
+              "ViewState": "AQIAADoAAAAAAAAAALB8wFsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T09:20:30.482Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "_AddPaymentPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Payment\\_AddPaymentPartial.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Payment\\_AddPaymentPartial.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Payment\\_AddPaymentPartial.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Payment\\_AddPaymentPartial.cshtml",
+              "ViewState": "AQIAAEgAAAAAAAAAAEB0wCQAAABfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T09:12:14.29Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "ViewExecutor.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\AppData\\Local\\SourceServer\\010ab9f68d320a9741539a2c3c04050ffc7d001b081deddcb0bc7a34cf596876\\src\\Mvc\\Mvc.ViewFeatures\\src\\ViewExecutor.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\010ab9f68d320a9741539a2c3c04050ffc7d001b081deddcb0bc7a34cf596876\\src\\Mvc\\Mvc.ViewFeatures\\src\\ViewExecutor.cs",
+              "ToolTip": "C:\\Users\\epicm\\AppData\\Local\\SourceServer\\010ab9f68d320a9741539a2c3c04050ffc7d001b081deddcb0bc7a34cf596876\\src\\Mvc\\Mvc.ViewFeatures\\src\\ViewExecutor.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\010ab9f68d320a9741539a2c3c04050ffc7d001b081deddcb0bc7a34cf596876\\src\\Mvc\\Mvc.ViewFeatures\\src\\ViewExecutor.cs",
+              "ViewState": "AQIAAOkAAAAAAAAAAIAywPoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T06:14:44.201Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "UpsertSchedule.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Schedule\\UpsertSchedule.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Schedule\\UpsertSchedule.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Schedule\\UpsertSchedule.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Schedule\\UpsertSchedule.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T10:55:50.907Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "TextContentAreas.js",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\TextContentAreas.js",
+              "RelativeDocumentMoniker": "InfoMed\\wwwroot\\js\\TextContentAreas.js",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\TextContentAreas.js",
+              "RelativeToolTip": "InfoMed\\wwwroot\\js\\TextContentAreas.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-07-12T09:12:01.199Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Fees.js",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\Fees.js",
+              "RelativeDocumentMoniker": "InfoMed\\wwwroot\\js\\Fees.js",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\wwwroot\\js\\Fees.js",
+              "RelativeToolTip": "InfoMed\\wwwroot\\js\\Fees.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-07-12T09:20:37.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "TextContentAreas.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\TextContentAreas\\TextContentAreas.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\TextContentAreas\\TextContentAreas.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\TextContentAreas\\TextContentAreas.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\TextContentAreas\\TextContentAreas.cshtml",
+              "ViewState": "AQIAAC4AAAAAAAAAALB8wAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-12T09:11:39.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Services\\Implementation\\AccountService.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Services\\Implementation\\AccountService.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Services\\Implementation\\AccountService.cs",
+              "RelativeToolTip": "InfoMed\\Services\\Implementation\\AccountService.cs",
+              "ViewState": "AQIAACgAAAAAAAAAAAAiwFcAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-10T12:58:01.242Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "ScheduleController.cs",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\ScheduleController.cs",
+              "RelativeDocumentMoniker": "InfoMed\\Controllers\\ScheduleController.cs",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Controllers\\ScheduleController.cs",
+              "RelativeToolTip": "InfoMed\\Controllers\\ScheduleController.cs",
+              "ViewState": "AQIAAFUAAAAAAAAAAAAuwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T07:27:55.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "InfoMed\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\epicm\\Desktop\\InfoMed_UI\\InfoMed_UI\\InfoMed\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "InfoMed\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-10T13:10:21.202Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

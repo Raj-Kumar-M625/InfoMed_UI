@@ -1,0 +1,112 @@
+﻿@model User;
+@{
+    List<UserRole> userRoles = ViewBag.UserRoles;
+}
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdUser > 0 ? "Edit User" : "Add User")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="userForm" action="" autocomplete="off">
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="userName" class="text-dark">User Name<i class="text-danger">*</i></label>
+                            <input type="text" class="form-control" asp-for="UserName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmailAddress" class="text-dark">Email<i class="text-danger">*</i></label>
+                            <input type="email" class="form-control p-2" asp-for="EmailAddress" required />
+                        </div>
+                    </div>
+                    <div class="row content-center-row">
+                        <div class="col-md-6 mt-2">
+                            <label for="MobileNumber" class="text-dark">Mobile Number<i class="text-danger">*</i></label>
+                            <input type="text" id="MobileNumber" class="form-control p-2" asp-for="MobileNumber" name="mobileNumber" required />
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label for="EndTime" class="text-dark">Role<i class="text-danger">*</i></label>
+                            <select asp-for="Role" name="role" id="role" required class="form-select">
+                                <option value="" disabled selected>Select</option>
+                                @foreach (var role in userRoles)
+                                {
+                                    <option value="@role.Name">@role.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row content-center-row">
+                        @if (Model?.IdUser > 0)
+                        {
+                            <div class="col-md-6 mt-2">
+                                <label for="Status" class="text-dark">Status<i class="text-danger">*</i></label>
+                                <select asp-for="Status" name="status" id="Status" required class="form-select">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="@true">Active</option>
+                                    <option value="@false">In Active</option>
+                                </select>
+                            </div>
+                        }
+
+                        <div class="col-md-6 mt-2">
+                            @if (Model?.IdUser is null)
+                            {
+                                <label for="Status" class="text-dark">Password<i class="text-danger">*</i></label>                                
+                                <input type="password" asp-for="Password" class="form-control" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                            }
+                        </div>
+
+                        @if (Model?.IdUser is null)
+                        {
+                            <div class="col-md-6 mt-2"></div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label for="EndTime" hidden class="text-dark">End Time<i class="text-danger">*</i></label>
+                        <input type="text" asp-for="IdUser" name="idUser" hidden id="IdUser" value="@(Model?.IdUser ?? 0)" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#password').attr('autocomplete', 'off');
+
+    $("#userForm").on("submit", async function (event) {
+        event.preventDefault();
+        var userId = parseInt($("#IdUser").val())
+        var form = document.getElementById("userForm")
+        var formData = new FormData(form)
+
+        const URL = userId > 0 ? `/User/EditUser` : "/User/AddUser";
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#userModal").modal('hide')
+                $(".content").html(data.html)
+                new DataTable('#userTable', {
+                    "bScrollCollapse": true,
+                    "bPaginate": true
+                });
+                $("#dt-length-0").css("margin-right", "8px")
+                swal({
+                    title: "Success",
+                    text: `User ${userId > 0 ? "updated" : "created"} successfully.`,
+                    icon: "success",
+                })
+            })
+    })
+</script>

@@ -1,0 +1,103 @@
+﻿@model ScheduleDetailsDto;
+@{
+    int idScheduleMaster = ViewBag.IdScheduleMaster;
+}
+
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdScheduleDetail > 0 ? "Edit Schedule Details" : "Add Schedule Details")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="scheduleDetailsForm">
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-12">
+                            <label for="Topic" class="text-dark">Topic Name<i class="text-danger">*</i></label>
+                            <input type="text" id="TopicName" class="form-control p-2" asp-for="TopicName" name="TopicName" maxlength="100" required />
+                        </div>
+                    </div>
+                    <div class="row content-center-row">
+                        <div class="col-md-12">
+                            <label for="Topic" class="text-dark">Topic<i class="text-danger">*</i></label>
+                            <textarea id="schedule-topic-editor" name="topic" asp-for="Topic">@Model?.Topic</textarea>
+                        </div>
+                    </div>
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="StartTime" class="text-dark">Start Time<i class="text-danger">*</i></label>
+                            <input type="time" id="StartTime" class="form-control p-2" asp-for="StartTime" name="StartTime" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EndTime" class="text-dark">End Time<i class="text-danger">*</i></label>
+                            <input type="time" id="EndTime" class="form-control p-2" asp-for="EndTime" name="EndTime" required />
+                        </div>
+                    </div>
+                        <div class="col-md-6">
+                            <label for="EndTime" hidden class="text-dark">End Time<i class="text-danger">*</i></label>
+                            <input type="text" id="IdScheduleMaster" hidden class="form-control p-2" asp-for="IdScheduleMaster" name="idScheduleMaster" value="@idScheduleMaster" />
+                            <input type="text" id="idScheduleDetails" asp-for="IdScheduleDetail" name="IdScheduleDetail" hidden value="@(Model?.IdScheduleDetail ?? 0)" />
+                            <input type="text" class="form-control" asp-for="IsActive" id="IsActive" name="isActive" hidden value="@(Model?.IsActive ?? true)" />
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>    
+    $('#schedule-topic-editor').summernote({
+        tabsize: 2,
+        height: 250,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150']
+    });
+
+    $("#scheduleDetailsForm").on("submit", async function (event) {
+        event.preventDefault();
+        var id = parseInt($("#idScheduleDetails").val())
+        var idScheduleMaster = parseInt($("#IdScheduleMaster").val())
+        var form = document.getElementById("scheduleDetailsForm")
+        var formData = new FormData(form)
+
+        const startTimeInput = document.getElementById('StartTime').value;
+        const endTimeInput = document.getElementById('EndTime').value;
+
+        if (!validateTimes(startTimeInput, endTimeInput)) {
+            swal({
+                title: "",
+                text: `The start time should be before the end time.`,
+                icon: "warning",
+            })
+           return
+        } 
+
+        const URL = id > 0 ? `/Schedule/EditScheduleDetails` : `/Schedule/AddScheduleDetails`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#detailsModal").modal('hide')
+                $(`#scheduleDetailsModal-${idScheduleMaster}`).modal('hide')
+                    $("#content-master").html(data.html)
+                    $(`#scheduleDetailsModal-${idScheduleMaster}`).modal('show')
+                $("#dt-length-0").css("margin-right", "8px")
+            })
+    })
+</script>

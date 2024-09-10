@@ -1,0 +1,358 @@
+﻿@using System.Text.Json
+@using InfoMed.Utils
+@model RegistrationDto;
+@{
+    List<ConferenceFeeDto> conferenceFees = ViewBag.ConferenceFees;
+    List<RegistrationMemberDto> reg = Model?.RegistrationMembers as List<RegistrationMemberDto>;
+    PaymentDetailsDto paymentDetails = ViewBag.Payment;
+    List<Country> countries = ViewBag.Countries;
+    Session session = new Session(new HttpContextAccessor());
+    EventVersionDto eventVersionDto = session.GetEvent();
+}
+<form id="register-form" action="">
+    <div class="container-fluid">
+        <div class="row  content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Full Name<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" name="name" asp-for="Name" required />
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Email<i class="text-danger">*</i></label>
+                <input type="email" class="form-control" name="emailID" asp-for="EmailID" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Mobile Number</label>
+                <input type="text" class="form-control" asp-for="MobileNumber" name="mobileNumber" />
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Company<i class="text-danger">*</i></label>x
+                <input type="text" class="form-control" asp-for="CompanyName" name="companyName" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Country<i class="text-danger">*</i></label>
+                <select class="form-select" asp-for="CountryName" name="countryName" required>
+                    <option value="">Select</option>
+                    @foreach (var country in countries)
+                    {
+                        <option value="@country.CountryName" selected=@(country.ISDCode == "60" ? true:false)>(+@country.ISDCode) @country.CountryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Zip Code<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" asp-for="ZipCode" name="zipCode" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Address<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" asp-for="Address" name="address" required />
+            </div>
+            <div class="col-md-4 m-2" style="visibility:hidden">
+                <input asp-for="RegType" name="regType" value="Group Registration" />
+                <input asp-for="NoOfPersons" name="noOfPersons" value="@Model?.NoOfPersons" />
+                <input asp-for="IdEvent" name="idEvent" value="@Model?.IdEvent" />
+                <input asp-for="IdRegistration" name="idRegistration" value="@Model?.IdRegistration" />
+            </div>
+        </div>
+        <div class="row content-center-row m-2">
+            <div class="col-md-4 d-flex conference-fees">
+                @foreach (var fee in conferenceFees.OrderBy(fee => fee.OrderNumber))
+                {
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox" class="form-check checkbox" id="conferenceFee-@fee.IdConferenceFee" @(Model?.IdRegistration > 0 ? "disabled":"") />
+                    </div>
+                    <div class="col-sm-6 mx-2">
+                        <div class="card conferenceFee-@fee.IdConferenceFee">
+                            <div class="card-body">
+                                <h6>@fee.FeeName</h6>
+                                <h6>RM @fee.Amount</h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-4" style="visibility:hidden">
+                <input />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <button type="button" id="add-member-btn" class="btn btn-primary">Add Member</button>
+            </div>
+            <div class="col-4 m-2" style="visibility:hidden">
+                </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-8">
+                <table id="registration-members-table" class="table table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Sl.No</th>
+                            <th>Name</th>
+                            <th>Email Id</th>
+                            <th>Mobile Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Existing members (if any) can be rendered here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <div class="row d-flex justify-content-center flex-column align-items-center mx-2">
+            <h2 class="text-center mb-3">Your Fee MYR <span class="amount">0.00</span></h2>
+            @Html.Raw(paymentDetails?.PaymentTextContent)
+            @if (Model?.IdRegistration == 0 || Model == null)
+            {
+                <button type="button" class="col-md-4 mt-4 btn text-light" @((bool)eventVersionDto.ShowPayNowButton ? "":"hidden") data-bs-toggle="modal" data-bs-target="#exampleModal" value="Pay Now" style="background:#6387f2;">Pay Now</button>
+                <button type="submit" class="col-md-4 mt-4 btn text-light" @((bool)eventVersionDto.ShowPayAtVenueButton ? "":"hidden") value="Register And Pay At Venue" style="background:#6387f2;">Register And Pay At Venue</button>
+            }
+            else
+            {
+                <button type="submit" class="col-md-4 mt-4 btn text-light" style="background:#6387f2;">Save Changes</button>
+            }
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">Scan The QR Code To Pay</h1>
+                    <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="@paymentDetails?.QRCodeImage" width="350" height="400" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="pop-up-submit" class="btn btn-secondary" data-bs-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var nextMemberIndex = 0;
+    var amount = 0;
+    var selectedAmount = 0;
+
+    function addMemberRow() {
+        var newRow = `<tr>
+                <td>${nextMemberIndex+1}</td>
+                <td><input type="text" name="RegistrationMembers[${nextMemberIndex}].MemberName" class="form-control member-name" required /></td>
+                <td><input type="email" name="RegistrationMembers[${nextMemberIndex}].EmailID" class="form-control member-email" required /></td>
+                <td><input type="text" name="RegistrationMembers[${nextMemberIndex}].MobileNumber" class="form-control member-mobile" /></td>
+                <td><button type="button" class="btn btn-danger delete-member-btn">Delete</button></td>
+            </tr>`;
+        $('#registration-members-table tbody').append(newRow);
+        nextMemberIndex++;
+        amount = selectedAmount * (nextMemberIndex)        
+        $(".amount").html(`${amount}.00`);
+    }
+
+    $(document).on('click', '.delete-member-btn', function () {
+        $(this).closest('tr').remove();
+        reIndexSerialNumbers();
+        nextMemberIndex--; 
+        amount = selectedAmount * (nextMemberIndex)
+        $(".amount").html(`${amount}.00`);
+    });
+
+    function reIndexSerialNumbers() {
+        const table = document.getElementById('registration-members-table').getElementsByTagName('tbody')[0];
+        for (let i = 0; i < table.rows.length; i++) {
+            table.rows[i].cells[0].innerHTML = i + 1;
+        }
+    }
+
+    $('#add-member-btn').click(function () {
+        addMemberRow();
+    });
+
+    var reg = @Html.Raw(JsonSerializer.Serialize(reg));
+    if (reg && reg.length > 0) {
+        reg.forEach((member) => {
+            var row = `<tr>
+                    <td>${nextMemberIndex + 1}</td>
+                    <td><input type="hidden" name="RegistrationMembers[${nextMemberIndex}].IdRegistrationMember" value="${member.IdRegistrationMember}" />
+                    <input type="text" name="RegistrationMembers[${nextMemberIndex}].MemberName" class="form-control member-name" value="${member.MemberName}" /></td>
+                    <td><input type="email" name="RegistrationMembers[${nextMemberIndex}].EmailID" class="form-control member-email" value="${member.EmailID}" /></td>
+                    <td><input type="text" name="RegistrationMembers[${nextMemberIndex}].MobileNumber" class="form-control member-mobile" value="${member.MobileNumber}" /></td>
+                    <td><button type="button" class="btn btn-danger delete-member-btn">Delete</button></td>
+                </tr>`;
+            $('#registration-members-table tbody').append(row);
+            nextMemberIndex++; // Ensure next index is correctly incremented
+        });
+    }
+
+    var conferenceFees = @Html.Raw(JsonSerializer.Serialize(conferenceFees));
+    var registerationDto = @Html.Raw(JsonSerializer.Serialize(Model));
+    var amount = 0;
+
+    $("#register-form").on("submit", async function (event) {
+        event.preventDefault();
+        var form = document.getElementById("register-form");
+        var formData = new FormData(form);
+        var amountToBePaid = 0;
+        var idConferenceFees = [];
+
+        conferenceFees.forEach((fees) => {
+            var idConferenceFee = $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked");
+            if (idConferenceFee) {
+                amountToBePaid += fees.Amount;
+                idConferenceFees.push(fees.IdConferenceFee);
+            }
+        });
+
+        if (idConferenceFees.length === 0) {
+            swal({
+                title: "",
+                text: "Please select at least one event!.",
+                icon: "warning",
+            });
+            return;
+        }
+
+        const table = document.getElementById('registration-members-table').getElementsByTagName('tbody')[0];
+
+        if(table.rows.length === 0){
+             swal({
+                title: "",
+                text: "Please add atleast one member for group registration.",
+                icon: "warning",
+            });
+            return;
+        }
+
+        var totalAmount =  amountToBePaid*(table.rows.length+1)
+        formData.append("amountToBePaid",totalAmount);
+        formData.append("idConferenceFee", idConferenceFees.join(","));
+
+        const URL = `/Customer/RegisterMember`;
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                swal({
+                    title: "",
+                    text: "Event Registered successfully.",
+                    icon: "success",
+                });
+                window.location.href = localStorage.getItem('location');
+            });
+    });
+
+    $("#all-days").on("change", function () {
+        if ($(this).prop("checked")) {
+            $(".checkbox").prop("checked", true);
+            amount = conferenceFees.reduce((accumulator, currentValue) => accumulator + currentValue.Amount, 0);
+            $(".amount").html(`${amount}.00`);
+        }
+    });
+
+    conferenceFees.forEach((fees) => {
+        $(`#conferenceFee-${fees.IdConferenceFee}`).on("change", function () {
+            if ($(this).prop("checked")) {
+                $(`.card`).css("background", "");
+                $(`.checkbox`).prop("checked", false);
+                $(this).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+                amount = fees.Amount;
+            } else {
+                amount -= fees.Amount;
+                $("#all-days").prop("checked", false);
+                 $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "");
+            }
+            const table = document.getElementById('registration-members-table').getElementsByTagName('tbody')[0];
+            $(".amount").html(`${table.rows.length > 0 ? amount*(table.rows.length) : amount}.00`);
+            selectedAmount = amount
+        });
+
+        $(`.conferenceFee-${fees.IdConferenceFee}`).on("click", function () {
+            if (registerationDto.IdRegistration === 0) {
+            if (!$(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked")) {
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+            } else {
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", false);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "");
+            }
+            if ($(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked")) {
+                $(`.card`).css("background", "");
+                $(`.checkbox`).prop("checked", false);
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+                amount = fees.Amount
+            } else {
+                amount -= fees.Amount
+                $("#all-days").prop("checked", false)
+            }
+             const table = document.getElementById('registration-members-table').getElementsByTagName('tbody')[0];
+             $(".amount").html(`${table.rows.length > 0 ? amount*(table.rows.length) : amount}.00`);
+                selectedAmount = amount
+            }
+        })
+    });
+
+   
+    if (Object.keys(registerationDto).length > 0) {
+        if (registerationDto.IdConferenceFee) {
+            registerationDto.IdConferenceFee.split(",").forEach((id) => {
+                $(`#conferenceFee-${id}`).prop("checked", true);
+                $(`.conferenceFee-${id}`).css("background", "#c8fac5");
+            });
+        } else {
+            console.log("IdConferenceFee is null, no checkboxes to check");
+        }
+        const amountToBePaid = registerationDto.AmountToBePaid ?? 0;
+        $(".amount").html(`${amountToBePaid}.00`);        
+    }
+    $("#register-form").on("submit", function (event) {
+        event.preventDefault();
+
+        // Validate the form fields
+        if (!validateForm()) {
+            return;
+        }
+
+        // Show the payment modal if form is valid
+        $('#exampleModal').modal('hide');
+    });
+    function validateForm() {
+        // Perform your validation here
+        var valid = true;
+
+        // Example validation (you can add more as needed)
+        if ($('#register-form input[name=name]').val().trim() === '') {
+            swal({
+                title: "",
+                text: "Please enter your Full Name.",
+                icon: "warning",
+            });
+            valid = false;
+        }
+
+        if ($('#register-form input[name=emailID]').val().trim() === '') {
+            swal({
+                title: "",
+                text: "Please enter your Email.",
+                icon: "warning",
+            });
+            valid = false;
+        }
+
+        return valid;
+    }
+</script>

@@ -1,0 +1,147 @@
+
+
+body {
+    margin: 0px;
+    padding:0px;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+.footer {
+    position:fixed;
+    bottom: 0px;
+    left: 0px;
+}
+
+.ck-editor__editable {
+    min-height: 200px;
+    max-height: 200px;
+    overflow:scroll;
+}
+
+.content-center-row {
+    display:flex;
+    justify-content:center;
+}
+
+.MinBody {
+    width: 100%;
+    min-height: 600px;
+    margin-bottom: 50px;
+
+}
+
+.bg-slate-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+}
+
+.h-\[40px\] {
+    height: 40px;
+}
+
+.w-\[9rem\] {
+    width: 9rem
+}
+
+.mt-\[8rem\] {
+    margin-top: 8rem
+}
+
+
+
+.element {
+    width: 33.3333%;
+}
+
+
+@media (min-width: 1024px) {
+    .element {
+        width: 25%;
+    }
+}
+
+.w-\[12rem\] {
+    width: 12rem
+}
+
+.h-\[90px\] {
+    height: 90px;
+}
+
+.object-contain {
+    object-fit: contain;
+}
+
+
+.body{
+    margin-top:6%;
+}
+
+/*Footer*/
+.SDMSfooter {
+    background-color: #00244B !important;
+    color: white !important;
+    //line-height: 1.5em;
+    //padding-top: 2em;
+    font-weight: 500;
+   //padding-bottom: 2rem;
+}
+
+.footerli {
+    color: white !important;
+    font-weight: 600 !important;
+    line-height: 1.7em;
+    text-decoration: none;
+}
+
+.footer-text {
+    color: white !important;
+}
+
+.SDMSfooter .footerli {
+    list-style-type: none;
+    color: white !important;
+    font-weight: 600 !important;
+    line-height: 1.7em;
+    text-decoration: none;
+}
+.modal-header {
+    background-color: #00244B !important;
+    color: white !important;
+    line-height: 1.5em;
+    font-weight: 500;
+}
+
+/* Remove box shadow from form-control elements */
+.form-control,.form-select {
+    box-shadow: none !important;
+}
+
+.cursor-pointer{
+    cursor:pointer;
+}
+.table-container {
+    padding-left: 15px; /* Adjust value as needed */
+    padding-right: 15px; /* Adjust value as needed */
+}
+
+@media (max-width: 600px) {
+    .conference-fees {
+        display: flex;
+        flex-direction:column;
+    }
+
+    .conference-fees-checkbox {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+.card:hover {
+    background: #eef2ed;
+    cursor: pointer;
+}
+.header-center {
+    font-size: 12px;
+}

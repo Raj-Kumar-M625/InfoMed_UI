@@ -1,0 +1,19 @@
+﻿<nav aria-label="breadcrumb" class="mx-2">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary"><a asp-controller="Home" asp-action="Dashboard">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Users</h3>
+        <button class="btn btn-primary" id="btn-text-content" onclick="addUser()">Add User</button>
+    </div>
+    <div class="content">
+        <partial name="./_UserListPartial.cshtml" />
+    </div>
+</div>
+<div class="user-content">
+</div>
+<script type="text/javascript" src="~/js/User.js" defer></script>
+

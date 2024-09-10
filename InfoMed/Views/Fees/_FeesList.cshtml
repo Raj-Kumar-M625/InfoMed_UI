@@ -1,0 +1,109 @@
+﻿@using InfoMed.Utils
+@model List<ConferenceFeeDto>;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var modeld = @Model;
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Event Fees</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <button class="btn btn-primary" onclick="addFeesMaster()">Add Fees</button>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <button class="btn btn-primary" onclick="addFeesMaster()">Add Fees</button>
+            }
+        }
+    </div>
+    <table id="FeesMasterTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" class="header-center">Fee Name</th>
+                <th scope="row" class="header-center">Fee Detail Text</th>
+                <th scope="row" class="header-center">Min.People Count</th>
+                <th scope="row" class="header-center">Days Count</th>
+                <th scope="row" class="header-center">Amount</th>
+                <th scope="row" class="header-center">Order</th>
+                @if (sessionDetails.UserRole == "Volunteer")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+                else if (sessionDetails.UserRole == "Admin")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.OrderBy(x => x.OrderNumber))
+            {
+                <tr>
+                    <td>@item.FeeName</td>
+                    <td>@item.FeeDetailText</td>
+                    <td>@item.MinimumPeopleCount</td>
+                    <td>@item.DayCount</td>
+                    <td>@item.Amount</td>
+                    <td>@item.OrderNumber</td>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editFeesMaster('@item.IdConferenceFee')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer mx-2" onclick="deleteFeesMaster('@item.IdConferenceFee')"></i>
+                            </td>
+                        }
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editFeesMaster('@item.IdConferenceFee')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer mx-2" onclick="deleteFeesMaster('@item.IdConferenceFee')"></i>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="content-master">
+</div>
+<script type="text/javascript" src="~/js/Fees.js" defer></script>
+
+<script>
+    new DataTable('#FeesMasterTable', {
+        "bScrollCollapse": true,
+        "bPaginate": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        },
+        "order": [[5, 'asc']]
+    });
+    $("#dt-length-0").css("margin-right", "8px")
+
+
+</script>

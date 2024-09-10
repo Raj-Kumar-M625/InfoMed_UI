@@ -1,0 +1,162 @@
+﻿@using InfoMed.Utils
+@model PaymentDetailsDto;
+@{    
+    Session session = new Session(new HttpContextAccessor());
+    int eventVersion = session.GetEventVersion();
+    string eventStatus = session.GetEventStatus();
+    var sessionuser = session.GetUserDetails();
+}
+<form id="paymentForm" action="">
+    <div class="container mx-auto mt-3">
+        <div class="row mb-3 mx-3 content-center-row">
+            <label class="fw-bold fs-4 mx-auto mb-3 col-md-10">Payment Details</label>            
+        </div>      
+
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-10">
+                <label for="">Payment Content<i class="text-danger">*</i></label>
+                <textarea onchange="alert('You just changed the textarea.')" id="PaymentTextContent" class="track-change" name="paymentTextContent" asp-for="PaymentTextContent">@Model?.PaymentTextContent</textarea>
+            </div>
+        </div>
+        @if (Model?.QRCodeImage != null)
+        {
+            <div class="row  m-3  content-center-row">
+                <div class="col-md-10">
+                    <label for="PaymentMap" class="col-form-label">Payment QR Code</label>
+                    <input type="file" class="form-control" name="PaymentMap" asp-for="PaymentMap"  accept="image/png, image/jpeg">
+                    <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 10 MB.</div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row  m-3  content-center-row">
+                <div class="col-md-10">
+                    <label for="PaymentMap" class="col-form-label">Payment QR Code<i class="text-danger">*</i></label>
+                    <input type="file" class="form-control" name="PaymentMap" asp-for="PaymentMap" required accept="image/png, image/jpeg">
+                    <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 10 MB.</div>
+                </div>
+            </div>
+            
+        }
+       
+        @if(Model?.QRCodeImage != null)
+        {
+            <div class="row  m-3  content-center-row">
+                <div class="col-md-3">
+                    <div class="image-container" style="max-height: 500px; overflow-y: auto;">
+                        <img src="@Url.Content(Model.QRCodeImage)" class="img-fluid" alt="Image" />
+                    </div>
+                </div>
+            </div>
+            
+        }
+        
+        <input type="text" class="form-control" hidden id="paymentTextContent" value="@Model?.PaymentTextContent" />
+        <input type="text" class="form-control" id="IdEventVersion" name="IdEventVersion" hidden asp-for="IdEventVersion" value="@(Model?.IdEventVersion ?? eventVersion)" />
+        <input type="text" class="form-control" id="IdEvent" name="IdEvent" hidden asp-for="IdEvent" value="@(Model?.IdEvent ?? 0)" />
+        <input type="text" class="form-control" id="IdPaymentArea" name="IdPaymentArea" hidden asp-for="IdPaymentArea" value="@(Model?.IdPaymentArea ?? 0)" />
+
+        @if (sessionuser.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <div class="row m-3 content-center-row">
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-success px-4 float-end">Save</button>
+                    </div>
+                </div>
+            }
+        }
+        else if (sessionuser.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <div class="row m-3 content-center-row">
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-success px-4 float-end">Save</button>
+                    </div>
+                </div>
+            }
+        }
+    </div> 
+</form>
+<script>
+    $('#PaymentTextContent').summernote({
+        tabsize: 2,
+        height: 250,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150']
+    });
+    document.getElementById('PaymentMap').addEventListener('change', function () {
+        var file = this.files[0];
+        var fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.size > 10 * 1024 * 1024) { // 10 MB in bytes
+            fileSizeError.style.display = 'block';
+            this.value = ''; // Clear the file input
+        } else {
+            fileSizeError.style.display = 'none';
+        }
+    });
+    $('#PaymentTextContent').summernote('code', $('#paymentTextContent').val())
+
+    $("#paymentForm").on("submit", async function (event) {
+        event.preventDefault();
+        var id = parseInt($("#IdEventVersion").val()) > 0
+        if (id == 0) {
+            swal({
+                title: "",
+                text: "Please add event details.",
+                icon: "warning",
+            })
+            return
+        }
+
+        var form = document.getElementById("paymentForm")
+        var formData = new FormData(form)
+        var paymentContent = formData.get("paymentTextContent")
+
+        if(paymentContent.length === 0) {
+            swal("","Please add payment content.","warning")
+            return
+        }
+
+        const URL = parseInt($("#IdPaymentArea").val()) > 0 ? `/Payment/UpdatePaymentDetails` : `/Payment/AddPaymentDetails`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#root").html(data.html)
+                $('#PaymentTextContent').summernote();
+                if (data.success) {
+                  
+                } else {
+                    swal({
+                        title: "",
+                        text: `Please add event details.`,
+                        icon: "warning",
+                    })
+                    localStorage.setItem('ACTION', "CREATE")
+                }
+            })
+    })
+
+    var type = parseInt($("#IdEventVersion").val()) > 0 ? "EDIT" : "CREATE";
+    localStorage.setItem('ACTION', type)
+</script>

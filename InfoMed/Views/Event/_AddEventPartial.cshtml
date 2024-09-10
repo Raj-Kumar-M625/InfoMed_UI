@@ -1,0 +1,418 @@
+﻿@using InfoMed.Utils
+@model EventVersionDto;
+@{
+    List<EventTypeDto> eventTypes = ViewBag.EventTypes;
+    Session session = new Session(new HttpContextAccessor());
+    string eventStatus = session.GetEventStatus();
+    var sessionuser = session.GetUserDetails();
+    var res = Model;
+}
+
+<style>
+    #EventHomeContent + .note-editor .note-editable {
+        background-color: #D3D3D3;
+    }
+
+    #FooterText + .note-editor .note-editable {
+        background-color: white;
+    }
+
+    .custom-file input[type="file"] {
+        display: none;
+    }
+</style>
+
+<form id="eventForm" action="">
+    <div class="container mx-auto mt-3">
+        <div class="row mb-3 mx-3 content-center-row">
+            <label class="fw-bold fs-4 mx-auto mb-3 col-md-10">Event Main Details</label>
+            <div class="col-md-5">
+                <label for="" class="text-dark">Event Web Page Name<i class="text-danger">*</i></label>
+                <input type="text" class="form-control p-2 track-change" asp-for="EventWebPageName" name="EventWebPageName" required maxlength="49" data-val="true" title="Webpage name should not accept spaces or special characters" pattern="^[a-zA-Z0-9]*$" />
+            </div>
+            <div class="col-md-5">
+                <label for="">Event Name<i class="text-danger">*</i></label>
+                <input type="text" class="form-control track-change" asp-for="EventName" name="EventName" required maxlength="99" />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-5">
+                <label for="">Event Type<i class="text-danger">*</i></label>
+                <select asp-for="EventType" name="eventType" class="form-select track-change" required>
+                    <option value="" disabled>Select</option>
+                    @foreach (var types in eventTypes)
+                    {
+                        <option value="@types.Name" selected="@(Model?.EventType?.Trim() == types.Name.Trim())">@types.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label for="noOFDay">No. of Days<i class="text-danger">*</i></label>
+                <input type="number" class="form-control track-change" id="noOFDay" name="NoOfDays" asp-for="NoOfDays" required />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-5">
+                <label for="">Start Date<i class="text-danger">*</i></label>
+                <input type="date" class="form-control track-change" id="EventStartDate" name="EventStartDate" asp-for="EventStartDate" required />
+            </div>
+            <div class="col-md-5">
+                <label for="endDate" class="ml-5 col-2">End Date<i class="text-danger">*</i></label>
+                <input type="date" class="form-control track-change" id="endDate" name="EventEndDate" asp-for="EventEndDate" required />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-5">
+                <label for="">Venue Name<i class="text-danger">*</i></label>
+                <input type="text" class="form-control track-change" name="VenueName" asp-for="VenueName" required maxlength="99" />
+            </div>
+            <div class="col-md-5">
+                <label for="">Venue Address<i class="text-danger">*</i></label>
+                <input type="text" class="form-control track-change" name="VenueAddress" asp-for="VenueAddress" required maxlength="199" />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <label for="" class="col-md-10">Venue Location<i class="text-danger">*</i></label>
+            <div class="col-md-5">
+                <label for="endDate" class="mx-2 mt-2">Latitude & Longitude</label>
+                <input type="text" class="form-control track-change" id="endDate" name="VenueLatLong" asp-for="VenueLatLong" required maxlength="50" />
+            </div>
+            @if (Model?.EventBackgroundImage?.Length > 0)
+            {
+                <div class="col-md-3">
+                    <label for="message-text" class="mx-2 mt-2">Event Background Image<i class="text-danger">*</i></label>
+                    <div class="input-group custom-file">
+                        <label class="input-group-text" for="file-name">Choose file</label>
+                        <label class="form-control d-flex justify-content-start align-items-center" for="file-name">
+                            <span id="file-name-text">Choose file to update</span>
+                            </label>
+                    <input type="file" class="form-control track-change" id="EventBackgroundLogoMap" name="EventBackgroundLogoMap" asp-for="EventBackgroundLogoMap" accept="image/png, image/jpeg" placeholder="Choose a file...">
+                    <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 10 MB.</div>
+                    </div>
+                </div>
+                <div class="col-md-2" style="margin-top:3%">
+                    <button type="button" class="rounded " onclick="viewEventImage('@Model.EventBackgroundImage')">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div id="evenImagedetails"></div>
+            }
+            else
+            {
+                <div class="col-md-5">
+                    <label for="message-text" class="mx-2 mt-2">Event Background Image<i class="text-danger">*</i></label>
+                    <input type="file" class="form-control track-change" id="EventBackgroundLogoMap" name="EventBackgroundLogoMap" asp-for="EventBackgroundLogoMap" accept="image/png, image/jpeg" required>
+                    <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 10 MB.</div>
+                </div>
+            }
+        </div>
+
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-10">
+                <label for="">Event Home Content<i class="text-danger">*</i></label>
+                <textarea onchange="alert('You just changed the textarea.')" id="EventHomeContent" class="track-change" name="eventHomeContent" asp-for="EventHomeContent">@Model?.EventHomeContent</textarea>
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-10">
+                <label for="">Footer Text</label>
+                <textarea onchange="textarae()" id="FooterText" name="FooterText" class="track-change" asp-for="FooterText">@Model?.FooterText</textarea>
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-5">
+                <label for="">Facebook Link</label>
+                <input type="text" class="form-control track-change" name="FacebookLink" asp-for="FacebookLink" maxlength="200" />
+            </div>
+            <div class="col-md-5">
+                <label for="">Twitter Link</label>
+                <input type="text" class="form-control track-change" name="TwitterLink" asp-for="TwitterLink" maxlength="199" />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <div class="col-md-5">
+                <label for="">LinkedIn Link</label>
+                <input type="text" class="form-control track-change" name="LinkedInLink" asp-for="LinkedInLink" maxlength="190" />
+            </div>
+            <div class="col-md-5">
+                <label for="">Copyright Text</label>
+                <input type="text" class="form-control track-change" name="CopyrightText" asp-for="CopyrightText" maxlength="1900" />
+            </div>
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <label for="" class="col-md-5">Event Background Color</label>
+            <label for="" class="col-md-5">Show Hurry Up Content<i class="text-danger">*</i></label>
+            <div class="col-md-5 mt-2">
+                <input type="color" class="fomr-control" asp-for="EventBackgroundColor" name="EventBackgroundColor" value="@(Model?.EventBackgroundColor ?? "#FF2327")" />
+            </div>
+            <div class="col-md-5">
+                <label for="yes" class="form-check-label">Yes</label>
+                <input type="radio" class="mx-3 form-check-input track-change" name="ShowHurryUpContent" asp-for="ShowHurryUpContent" value="true" required />
+                <label for="No" class="form-check-label">No</label>
+                <input type="radio" name="ShowHurryUpContent" class="mx-3 form-check-input track-change" asp-for="ShowHurryUpContent" value="false" required />
+            </div>            
+        </div>
+
+        <div class="row m-3 content-center-row">
+            <label for="" class="col-md-5">Show Pay Now Button</label>
+            <label for="" class="col-md-5">Show Pay At Venue Button</label>
+            <div class="col-md-5">
+                 <label for="yes" class="form-check-label">Yes</label>
+                <input type="radio" class="mx-3 form-check-input track-change" name="ShowPayNowButton" asp-for="ShowPayNowButton" value="true"/>
+                <label for="No" class="form-check-label">No</label>
+                <input type="radio" name="ShowPayNowButton" class="mx-3 form-check-input track-change" asp-for="ShowPayNowButton" value="false" />
+            </div>
+            <div class="col-md-5">
+                <label for="yes" class="form-check-label">Yes</label>
+                <input type="radio" class="mx-3 form-check-input track-change" name="ShowPayAtVenueButton" asp-for="ShowPayAtVenueButton" value="true"/>
+                <label for="No" class="form-check-label">No</label>
+                <input type="radio" name="ShowPayAtVenueButton" class="mx-3 form-check-input track-change" asp-for="ShowPayAtVenueButton" value="false"/>
+            </div>
+        </div>
+        <div class="row m-3 content-center-row">
+            <label for="" class="col-md-10">Show Book Ticket Button</label>
+            <div class="col-md-10">
+                <label for="yes" class="form-check-label">Yes</label>
+                <input type="radio" class="mx-3 form-check-input track-change" name="ShowBookTicketButton" asp-for="ShowBookTicketButton" value="true" required />
+                <label for="No" class="form-check-label">No</label>
+                <input type="radio" name="ShowBookTicketButton" class="mx-3 form-check-input track-change" asp-for="ShowBookTicketButton" value="false" required />
+            </div>
+        </div>
+
+        <input type="text" class="form-control" name="VersionStatus" hidden asp-for="VersionStatus" value="Pending" />
+        <input type="text" class="form-control" hidden id="eventHomeContent" value="@Model?.EventHomeContent" />
+        <input type="text" class="form-control" hidden id="footerText" value="@Model?.FooterText" />
+        <input type="text" class="form-control" id="IdEventVersion" name="IdEventVersion" hidden asp-for="IdEventVersion" value="@(Model?.IdEventVersion ?? 0)" />
+        <input type="text" class="form-control" id="IdEvent" name="IdEvent" hidden asp-for="IdEvent" value="@(Model?.IdEvent ?? 0)" />
+
+        @if (sessionuser.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                
+                <div class="row m-3 content-center-row">
+                    <div class="col-md-10">
+                    <button type="submit" class="btn btn-success px-4 float-end">Save</button>
+                </div>
+            </div>
+            }
+        }
+        else if (sessionuser.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <div class="row m-3 content-center-row">
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-success px-4 float-end">Save</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <input type="hidden" id="eventStatusValue" value="@eventStatus" />
+    <input type="hidden" id="enteredValuesFlag" value="false" />
+    <input type="hidden" id="contentChangedManuallyId" value="true" />
+    <input type="hidden" id="contentChangedManuallyId1" value="true" />
+</form>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" defer integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js" defer></script>
+@if (res != null)
+{
+    <script>
+
+        function attachEventListeners() {
+            // Add click event listener for .input-group-text
+            document.querySelector('.input-group-text').addEventListener('click', function () {
+                document.getElementById('EventBackgroundLogoMap').click();
+            });
+
+            // Add click event listener for .form-control.d-flex
+            document.querySelector('.form-control.d-flex').addEventListener('click', function () {
+                document.getElementById('EventBackgroundLogoMap').click();
+            });
+
+            // Add change event listener for #EventBackgroundLogoMap
+            document.getElementById('EventBackgroundLogoMap').addEventListener('change', function () {
+                var fileName = this.files[0].name;
+                document.getElementById('file-name-text').textContent = fileName;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            attachEventListeners();
+        });
+
+        // Function to call after partial view is loaded
+        function onPartialViewLoaded() {
+            attachEventListeners();
+        }
+    </script>
+}
+<script type="text/javascript">
+
+    setupTrackChangeListeners();    
+    async function viewEventImage(filePath) {
+        await fetch(`/Event/ViewEventImage?filePath=${filePath}`)
+            .then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)             
+                $("#evenImagedetails").html(data.html)
+                $("#EventcontentModal").modal('show')
+            })
+    }
+    function setupTrackChangeListeners() {
+        const trackChangeElements = document.querySelectorAll('.track-change');
+        const enteredValuesFlag = document.getElementById('enteredValuesFlag');
+        trackChangeElements.forEach(element => {            
+            element.addEventListener('change', function () {                
+                enteredValuesFlag.value = 'true';
+            });
+            element.addEventListener('input', function () {
+                enteredValuesFlag.value = 'true';
+            });
+        });       
+    }  
+   
+    $('#EventHomeContent').summernote({
+        tabsize: 2,
+        height: 250,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150']
+    });
+
+    $('#EventHomeContent').on('summernote.change', function () {        
+        let contentChangedManually = false;
+        if (contentChangedManually) {
+            const enteredValuesFlag = document.getElementById('enteredValuesFlag');
+            enteredValuesFlag.value = 'true';
+        } else {
+            const enteredValuesFlagValue = document.getElementById('contentChangedManuallyId');
+            if (enteredValuesFlagValue.value == 'false' && contentChangedManually == false) {
+                const enteredValuesFlag = document.getElementById('enteredValuesFlag');
+                enteredValuesFlag.value = 'true';
+            } else {
+                enteredValuesFlagValue.value = false;
+            }         
+        }       
+    });    
+    document.getElementById('EventBackgroundLogoMap').addEventListener('change', function () {
+        var file = this.files[0];
+        var fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.size > 10 * 1024 * 1024) { // 10 MB in bytes
+            fileSizeError.style.display = 'block';
+            this.value = ''; // Clear the file input
+        } else {
+            fileSizeError.style.display = 'none';
+        }
+    });
+
+    $('#FooterText').summernote({
+        tabsize: 2,
+        height: 250,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150']
+    });
+   
+    $('#FooterText').on('summernote.change', function () {
+        let contentChangedManually1 = false;
+        if (contentChangedManually1) {
+            const enteredValuesFlag = document.getElementById('enteredValuesFlag');
+            enteredValuesFlag.value = 'true';
+        } else {
+            const enteredValuesFlagValue1 = document.getElementById('contentChangedManuallyId1');
+            if (enteredValuesFlagValue1.value == 'false' && contentChangedManually1 == false) {
+                const enteredValuesFlag = document.getElementById('enteredValuesFlag');
+                enteredValuesFlag.value = 'true';
+            } else {
+                enteredValuesFlagValue1.value = false;
+            }
+        }
+    });
+
+    $('#EventHomeContent').summernote('code', $('#eventHomeContent').val())
+    $('#FooterText').summernote('code', $('#footerText').val())
+
+    var eventStat = $('#eventStatusValue').val();
+    if (eventStat == 'Approved') {
+        $('#EventHomeContent').summernote('disable');
+        $('#FooterText').summernote('disable');
+    }
+    function resetFileInput() {
+        $('#EventBackgroundLogoMap').val('');
+        $('#file-name-text').text('Choose file to update');
+    }
+    $("#eventForm").on("submit", async function (event) {
+        event.preventDefault();
+        var id = parseInt($("#IdEventVersion").val()) > 0
+        var form = document.getElementById("eventForm")
+        var formData = new FormData(form)
+        var homeContent = formData.get("eventHomeContent")
+
+        if(homeContent.length === 0){
+            swal("","Please add home content","warning")
+            return
+        }
+
+        const URL = id > 0 ? `/Event/EditEvent?view=EventDetails` : `/Event/AddEvent?view=EventDetails`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#root").html(data.html)
+                resetFileInput();
+                onPartialViewLoaded();
+                $('#FooterText').summernote();
+                if (data.success) {
+                    swal({
+                        title: "Success",
+                        text: `Event ${id > 0 ? 'updated' : 'added'} successfully.`,
+                        icon: "success",
+                    })
+                } else {
+                    swal({
+                        title: "",
+                        text: `Event name already exist.`,
+                        icon: "warning",
+                    })
+                    localStorage.setItem('ACTION', "CREATE")
+                }
+            })
+    })
+
+    var type = parseInt($("#IdEventVersion").val()) > 0 ? "EDIT" : "CREATE";
+    localStorage.setItem('ACTION', type)
+</script>

@@ -1,0 +1,110 @@
+﻿@using InfoMed.Utils
+@model LastYearMemoryDto;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+}
+
+<div class="modal fade" id="LastYearModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdLastYearMemory > 0 ? "Edit LastYearMemory" : "Add LastYearMemory")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="LastYearForm">
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="LastYearMemoryHeader" class="form-control p-2" asp-for="LastYearMemoryHeader" value="Memories of last year" name="LastYearMemoryHeader" maxlength="99" />
+                        </div>
+                    </div>
+                    <div class="row mt-2 content-center-row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="LastYearMemoryText" typeof="" class="form-control" name="LastYearMemoryText" rows="5" value="we have this year a good combination of local and international speakers" asp-for="LastYearMemoryText"></input>
+                        </div>
+                    </div>                    
+
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="OrderNumber" class="text-dark">Order Number<i class="text-danger">*</i></label>
+                            <input type="number" id="OrderNumber" class="form-control p-2" asp-for="LastYearMemoryDetail.OrderNumber" name="LastYearMemoryDetail.OrderNumber" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="MediaShortDesc" class="text-dark">Media ShortDesc<i class="text-danger">*</i></label>
+                            <input type="text" id="MediaShortDesc" class="form-control p-2" asp-for="LastYearMemoryDetail.MediaShortDesc" name="LastYearMemoryDetail.MediaShortDesc" required maxlength="50" />
+                        </div>
+                    </div>
+
+                    <div class="row content-center-row">
+                        <div class="col-md-12">
+                            <label for="LastYearMemoryMap" class="col-form-label">Media Content<i class="text-danger">*</i></label>
+                            @if (Model?.IdLastYearMemory > 0)
+                            {
+                                <input type="file" class="form-control" id="LastYearMemoryMap" name="LastYearMemoryMap" asp-for="LastYearMemoryMap">
+                                <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 5 MB</div>
+                            }
+                            else
+                            {
+                                <input type="file" class="form-control" id="LastYearMemoryMap" name="LastYearMemoryMap" asp-for="LastYearMemoryMap" required>
+                                <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 5 MB</div>
+                            }
+                        </div>                      
+                    </div>
+
+
+                </div>
+                <input type="text" class="form-control" id="IdLastYearMemory" name="IdLastYearMemory" hidden value="@(Model?.IdLastYearMemory ?? 0)" />
+                <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" />
+                <input type="text" class="form-control" asp-for="Status" id="Status" name="Status" hidden value="@(Model?.Status ?? true)" />
+                <input type="text" class="form-control" asp-for="LastYearMemoryDetail.IdLastYearMemoryDetail" id="Status" name="LastYearMemoryDetail.IdLastYearMemoryDetail" hidden value="@(Model?.LastYearMemoryDetail?.IdLastYearMemoryDetail ?? 0)" />
+                <input type="text" class="form-control" asp-for="LastYearMemoryDetail.IdLastYearMemory" id="Status" name="LastYearMemoryDetail.IdLastYearMemory" hidden value="@(Model?.LastYearMemoryDetail?.IdLastYearMemory ?? 0)" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/LastYear.js" defer></script>
+<script>
+    $("#LastYearModal").on("submit", async function (event) {
+        debugger
+        event.preventDefault();
+        var id = parseInt($("#IdLastYearMemory").val()) > 0
+        var form = document.getElementById("LastYearForm")
+        var formData = new FormData(form)
+
+        const URL = id > 0 ? `/LastYearMemories/EditLastYearMemories` : `/LastYearMemories/AddLastYearMemories`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#LastYearModal").modal('hide')
+                $("#root").html(data.html)
+                // swal({
+                //     title: "Success",
+                //     text: `LastYearMemories ${id > 0 ? 'updated' : 'added'} successfully.`,
+                //     icon: "success",
+                // })
+                $("#dt-length-0").css("margin-right", "8px")
+            })
+    })
+    document.getElementById('LastYearMemoryMap').addEventListener('change', function () {
+        var file = this.files[0];
+        var fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.size > 5 * 1024 * 1024) { // 5 MB in bytes
+            fileSizeError.style.display = 'block';
+            this.value = ''; // Clear the file input
+        } else {
+            fileSizeError.style.display = 'none';
+        }
+    });
+</script>

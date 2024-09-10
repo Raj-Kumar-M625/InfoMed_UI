@@ -1,0 +1,21 @@
+﻿@model UserDto;
+@{
+    var message = ViewBag.Message;
+}
+
+<form asp-action="Login" asp-controller="Account" class="row">
+    <div class="mx-auto mt-[8rem] w-4/5 element row">
+        @if (message != null)
+        {
+            <div id="alertMessageContainer" class="mt-1 mb-1 text-center"><span class="text-danger">@message</span></div>
+        }
+        <img src="~/images/logo.png" class="object-contain w-[12rem] h-[90px] mx-auto" />
+        <input type="email" class="form-control col-md-3 mb-2" placeholder="USERNAME" asp-for="EmailAddress" required />
+        <input type="password" class="form-control col-md-4 mt-2" placeholder="PASSWORD" asp-for="Password" required />
+        <input type="submit" class="btn btn-primary mt-3 flex-1 login-btn" value="LOGIN" />
+        <div class="d-flex justify-content-between">
+            <a class="float-right text-decoration-none" asp-action="ForgotPassword" asp-controller="Account">Forgot Password?</a>
+            <a class="float-right text-decoration-none" asp-action="ResetPassword" asp-controller="Account">Reset Password?</a>
+        </div>
+    </div>
+</form>

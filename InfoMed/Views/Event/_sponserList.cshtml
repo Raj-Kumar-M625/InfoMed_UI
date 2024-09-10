@@ -1,0 +1,168 @@
+﻿@using InfoMed.Utils
+@model List<SponserDto>
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Sponser List</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <a id="addNewBtn" class="btn btn-primary">Add New</a>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <a id="addNewBtn" class="btn btn-primary">Add New</a>
+            }
+        }
+    </div>
+    <div id="sponsors-section" class="container mx-auto m-3 table-responsive-sm">
+
+        <table id="table1" class="table  table-bordered ">
+            <thead>
+                <tr>
+                    <th class="header-center">Sponsor Name</th>
+                    <th class="header-center">Type</th>
+                    <th class="header-center">Show Text</th>
+                    <th class="header-center text-center">Logo</th>
+                    <th class="header-center">Order Number</th>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {@if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <th class="header-center text-center">Action</th>
+                        }
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <th class="header-center text-center">Action</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.SponsorName</td>
+                        <td>@obj.SponsorType</td>
+                        <td>@obj.SponsorShowText</td>
+                        <td class="text-center">
+                            <img src="@obj.SponsorLogo" style="max-width: 50px; height: auto;" />
+                        </td>
+                        <td>@obj.OrderNumber</td>
+                        @if (sessionDetails.UserRole == "Volunteer")
+                        {@if (eventStatus != "Submitted" && eventStatus != "Approved")
+                            {
+                                <td class="text-center">
+                                    <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btnsponser-edit" onclick="editSponser('@obj.IdEventSponsor')"></i>
+                                    <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteSponser('@obj.IdEventSponsor')"></i>
+                                </td>
+                            }
+                        }
+                        else if (sessionDetails.UserRole == "Admin")
+                        {
+                            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                            {
+
+                                <td class="text-center">
+                                    <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btnsponser-edit" onclick="editSponser('@obj.IdEventSponsor')"></i>
+                                    <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteSponser('@obj.IdEventSponsor')"></i>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="Add-Sponser">
+</div>
+<div id="EditSponser">
+</div>
+
+
+<script>
+    new DataTable('#table1', {
+        "bScrollCollapse": true,
+        "bPaginate": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        },
+        "order": [[4, 'asc']],
+        "columnDefs": [            
+            { "width": "10%", "targets": 4 }  // Order Number column
+        ]
+    });
+    document.getElementById('addNewBtn').addEventListener('click', async function () {
+        var id = parseInt($("#idEventVersion").val())
+         if (id == 0) {
+             swal({
+                 title: "",
+                 text: "Please add event details.",
+                 icon: "warning",
+             })
+             return
+        }
+
+        await fetch("/Event/AddSponser")
+            .then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#Add-Sponser").html(data.data);
+                $('#exampleModal').modal('show');
+            })
+
+    });
+    async function editSponser(sponsorId) {
+        await fetch(`/Event/EditSponser?id=${sponsorId}`).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#EditSponser").html(data.data)
+                $("#staticBackdrop").modal('show')
+            })
+    }
+
+
+    async function deleteSponser(idEventSponsor) {
+        swal({
+            title: "Are you sure to delete?",
+            text: "",
+            icon: "warning",
+            dangerMode: true,
+            buttons: {
+                cancel: "Cancel",
+                confirm: "Ok",
+            },
+        }).then(async (result) => {
+            if (result) {
+                await fetch(`/Event/DeleteSponsor?id=${idEventSponsor}`).then(response => response.text())
+                    .then(response => {
+                        debugger
+                        var data = JSON.parse(response)
+                        $("#root").html(data.html);
+                    })
+            }
+        })
+    }
+
+
+</script>
+
+

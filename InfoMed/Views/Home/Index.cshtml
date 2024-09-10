@@ -1,0 +1,62 @@
+﻿@using InfoMed.Utils;
+@using System.Text.Json;
+@{
+    ViewData["Title"] = "Home Page";
+    Session session = new Session(new HttpContextAccessor());
+    var sessionDetails = ViewBag.sessionUser;
+}
+
+@if (sessionDetails.UserRole != "Volunteer")
+{
+     <nav aria-label="breadcrumb" class="mx-2">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item text-primary"><a asp-controller="Home" asp-action="Dashboard">Home</a></li>
+             <li class="breadcrumb-item active" aria-current="page">List of Events</li>
+         </ol>
+     </nav>
+}
+
+<div class="table-container table-responsive-lg">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <div>
+            <h3 class="fs-4 fw-bold">List of Events</h3>
+            <span><input type="radio" class="form-check-input" value="@Constants.LatestVersion" name="events" checked/> Show events with latest version</span><br />
+            <span><input type="radio" class="form-check-input" value="@Constants.AllVersion" name="events" /> Show all events</span><br />
+        </div>
+        <div>
+        <a asp-controller="Event" asp-action="Event" class="btn btn-primary">Add Event</a>
+        </div>
+    </div>
+    <div class="content">
+        <partial name="./_EventListPartial.cshtml"/>
+    </div>
+</div>
+
+<script>
+    function confirmRedirect(url) {
+        swal({
+            title: "Are you sure to edit these event?",
+            text: "",
+            icon: "warning",
+            buttons: {
+                cancel: "Cancel",
+                confirm: "Ok",
+            },
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    $("input[type=radio]").on("change",async function(){
+        var version = $(this).val();
+        await fetch(`/Home/Index?version=${version}`)
+             .then(response => response.json())
+             .then(response => {
+                 $(".content").html(response.data)
+                applyJQTable()
+                });
+    });
+</script>

@@ -1,0 +1,93 @@
+﻿@using InfoMed.Utils
+@{
+    ViewData["Title"] = "Home Page";
+    List<EventVersionDto> events = ViewBag.Events;
+    Session session = new Session(new HttpContextAccessor());
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+    List<User> user = ViewBag.Users;
+}
+<table id="table" class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Version</th>
+            <th scope="row">Created By</th>
+            <th scope="row">Approved By</th>
+            <th scope="row">Event Dates</th>
+            <th scope="row">Event Webpage Name</th>
+            <th scope="row">Status</th>
+            <th scope="row">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in events)
+        {
+            <tr>
+
+                <td>@obj.EventName</td>
+                <td>@obj.IdVersion</td>
+                <td>@(obj.CreatedBy != null ? user.FirstOrDefault(x => x.IdUser == obj.CreatedBy).UserName : "")</td>
+                <td>@(obj.ApprovedBy != null ? user.FirstOrDefault(x => x.IdUser == obj.ApprovedBy).UserName : "")</td>
+                <td>
+                    @Convert.ToDateTime(@obj.EventStartDate).ToString("dd-MM-yyyy")
+                    -
+                    @Convert.ToDateTime(@obj.EventEndDate).ToString("dd-MM-yyyy")
+                </td>
+                <td>@obj.EventWebPageName</td>
+                <td>@obj.VersionStatus</td>
+                <td class="text-center">
+                    @if (obj.VersionStatus == "Approved")
+                    {
+                        @if (sessionDetails.UserRole == "Volunteer")
+                        {
+                            @if (obj.EventView == true)
+                            {
+                                <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@obj.IdEvent" asp-route-idEventVersion="@obj.IdEventVersion">
+                                    <i class="bi bi-eye-fill fs-5 text-dark"></i>
+                                </a>
+
+                            }
+                            else
+                            {
+                                <a href="javascript:void(0);" onclick="confirmRedirect('@Url.Action("EventVersionCreate", "Event", new { id = @obj.IdEvent })')">
+                                    <i class="bi bi-pencil-fill fs-5 text-dark"></i>
+                                </a>
+                            }
+
+                        }
+                        else
+                        {
+                            <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@obj.IdEvent" asp-route-idEventVersion="@obj.IdEventVersion">
+                                <i class="bi bi-eye-fill fs-5 text-dark"></i>
+                            </a>
+
+                        }
+
+                    }
+                    else
+                    {
+                        @if (obj.VersionStatus == "Approved")
+                        {
+                            <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@obj.IdEvent" asp-route-idEventVersion="@obj.IdEventVersion">
+                                <i class="bi bi-eye-fill fs-5 text-dark"></i>
+                            </a>
+                        }
+                        else @if (obj.VersionStatus == "Submitted")
+                        {
+                            <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@obj.IdEvent" asp-route-idEventVersion="@obj.IdEventVersion">
+                                <i class="bi bi-eye-fill fs-5 text-dark"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@obj.IdEvent" asp-route-idEventVersion="@obj.IdEventVersion">
+                                <i class="bi bi-pencil-fill fs-5 text-dark"></i>
+                            </a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

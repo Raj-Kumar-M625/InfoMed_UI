@@ -1,0 +1,121 @@
+﻿@using InfoMed.Utils
+@model SpeakersDto
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h5 class="modal-title text-light fs-5" id="exampleModalLabel">Add Speaker</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="addEvent" id="addSpeakerForm" asp-action="AddSpeaker" asp-controller="Event" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Name<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" name="SpeakerName" asp-for="SpeakerName" required maxlength="90">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">About Speaker<i class="text-danger">*</i></label>
+                        <textarea id="AboutSpeaker" class="form-control" name="AboutSpeaker" rows="5" maxlength="1900" asp-for="AboutSpeaker" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Designation<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" name="SpeakerDesignation" asp-for="SpeakerDesignation" required maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Order Number<i class="text-danger">*</i></label>
+                        <input type="number" class="form-control" name="OrderNumber" asp-for="OrderNumber" required value="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Image<i class="text-danger">*</i></label>
+                        <input type="file" class="form-control" id="SpeakerLogoMap" name="SpeakerLogoMap" asp-for="SpeakerLogoMap" required>
+                        <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 120 KB</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" /
+            </form>
+            </>
+        </div>
+    </div>
+
+
+
+    <script>
+        debugger;
+        $("#addSpeakerForm").on("submit", async function (event) {
+            debugger
+            event.preventDefault();
+            var form = document.getElementById('addSpeakerForm');
+            var formData = new FormData(form);
+            try {
+                let response = await fetch('/Event/AddSpeaker', {
+                    method: 'POST',
+                    body: formData
+                });
+                let data = await response.json();
+                if (data.success) {
+                    // swal({
+                    //     title: "Success",
+                    //     text: `Speaker Added successfully.`,
+                    //     icon: "success",
+                    // }).then(() => {
+                    //     $('#exampleModal').modal('hide');
+                    //     // Return a new promise to chain the next steps
+                    // }).then(async () => {
+                    $('#exampleModal').modal('hide');
+                        const id = data.idEvent;
+                        const idEventversion = data.idEventVersion;
+                        const URL = `/Event/EditEvent?id=${id}&idEventVersion=${idEventversion}&view=Speakers`;
+                        let editResponse = await fetch(URL, {
+                            method: 'Get',
+                        });
+                        let editData = await editResponse.text();
+                        var parsedData = JSON.parse(editData);
+                        $("#root").html(parsedData.html);
+                    // }).catch(error => {
+                    //     console.error('Error:', error);
+                    // });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: `Please Add Event Details.`,
+                        icon: "warning",
+                    }).then(() => {
+                        $('#exampleModal').modal('hide');
+                    });
+                }
+            } catch (error) {
+                debugger
+                console.error('Error:', error);
+                swal({
+                    title: "Error",
+                    text: `An error occurred.`,
+                    icon: "error",
+                }).then(() => {
+                    $('#exampleModal').modal('hide');
+                });
+            }
+        });
+        document.getElementById('SpeakerLogoMap').addEventListener('change', function () {
+            var file = this.files[0];
+            var fileSizeError = document.getElementById('fileSizeError');
+
+            if (file && file.size > 120 * 1024) { // 120 KB in bytes
+                fileSizeError.style.display = 'block';
+                this.value = ''; // Clear the file input
+            } else {
+                fileSizeError.style.display = 'none';
+            }
+        });
+    </script>

@@ -1,0 +1,36 @@
+﻿@model LastYearMediaDto;
+<div class="modal fade" id="MediacontentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5" id="exampleModalLabel">Media Content</h4>
+                <button type="button" class="btn-close close-btn  bg-light" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (Model.IsVideo)
+                {
+                    <video controls class="w-100" id="videoPlayer">
+                        <source src="@Model.FilePath" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                }
+                else
+                {
+                    <img src="@Model.MediaContent" class="img-fluid" id="imageViewer" />
+                }
+                @* <div>
+                    <img src="@Model.MediaContent" />
+                </div> *@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".close-btn").on('click', function () {
+        $("#MediacontentModal").modal('hide')
+    })
+</script>

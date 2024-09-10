@@ -1,0 +1,123 @@
+﻿@using InfoMed.Utils
+@model RegistrationDto;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    EventVersionDto eventVersionDto = session.GetEvent();
+}
+
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet" />
+
+<!-- Vendor CSS Files -->
+<link href="~/assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet" />
+<link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet" />
+<link href="~/assets/vendor/aos/aos.css" rel="stylesheet" />
+<link href="~/assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet" />
+<link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+<!-- Main CSS File -->
+<link href="~/assets/css/main.css" rel="stylesheet" />
+<link href="~/assets/css/Font-icon.css" rel="stylesheet" />
+
+<style>
+    .text-primary {
+        background-color: red;
+    }
+</style>
+
+<header id="header" class="header fixed-top">
+    <div class="branding d-flex align-items-center">
+        <div class="container position-relative d-flex align-items-center">
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            <a id="reg-logo" class="logo d-flex align-items-center">
+                <img src="~/assets/img/logo.png" alt="" />
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="main" style="margin-top:5rem;">
+    <div class="d-flex flex-column container row content-center-row mx-auto w-75">
+    <h2 class="mx-4">@eventVersionDto.EventName Registration Form</h2>
+        <p class="mx-4">A confirmation email shall be sent upon successful Registration</p>       
+     <p class="mx-4">** It Is mandatory to provide your email and mobile number.</p>
+    </div>
+    <ul class="nav nav-tabs mb-3 w-25 mx-auto mt-4" id="ex1" role="tablist">
+        @if (Model == null || Model.RegType == null)
+        {
+            <li class="nav-item" role="presentation">
+                <button data-mdb-tab-init
+                    class="nav-link  border-none tab-btn bg-primary text-light"
+                    id="single-register"
+                    role="tab"
+                    style="width:max-content;"
+                    onclick="GetRegisterType('Single Registration')">
+                    <strong>Single Registration</strong>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button data-mdb-tab-init
+                    class="nav-link active border-none tab-btn"
+                    id="group"
+                    role="tab"
+                    style="width:max-content;"
+                    onclick="GetRegisterType('Group Registration')">
+                    <strong>Group Registration</strong>
+                </button>
+            </li>
+        }
+        else
+        {
+            if (Model.RegType == "Single Registration")
+            {
+                <li class="nav-item" role="presentation">
+                    <button data-mdb-tab-init
+                    class="nav-link  border-none tab-btn bg-primary text-light"
+                    id="single-register"
+                    role="tab"
+                    onclick="GetRegisterType('Single Registration',)">
+                        Single Registration
+                    </button>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item" role="presentation">
+                    <button data-mdb-tab-init
+                    class="nav-link active border-none tab-btn  bg-primary text-light"
+                    id="group"
+                    role="tab"
+                    onclick="GetRegisterType('Group Registration')">
+                        Group Registration
+                    </button>
+                </li>
+            }
+        }
+    </ul>
+
+    <div id="content">
+       
+        @if (Model == null||  Model.RegType == null)
+        {
+            <partial name="./SingleRegistration.cshtml" />
+        }
+        else
+        {
+            @if (Model.RegType == "Single Registration")
+            {
+                <partial name="./SingleRegistration.cshtml" />
+            }
+            else
+            {
+                <partial name="./GroupRegistration.cshtml" />
+            }
+        }
+        
+    </div>
+</div>
+<script src="~/js/Register.js" defer></script>

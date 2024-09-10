@@ -1,0 +1,84 @@
+﻿@using InfoMed.Utils
+@using System.Text.Json
+@model ScheduleMasterDto;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+    EventVersionDto eventVersionDto = session.GetEvent();
+}
+
+<div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdScheduleMaster > 0 ? "Edit Schedule" : "Add Schedule")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="scheduleForm">
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="ContentHeader" class="text-dark">Schedule Name<i class="text-danger">*</i></label>
+                            <input type="text" id="DayScheduleName" class="form-control p-2" asp-for="DayScheduleName" name="DayScheduleName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="OrderNumber" class="text-dark">Schedule Date<i class="text-danger">*</i></label>
+                            <input type="date" id="ScheduleDate" class="form-control p-2" asp-for="ScheduleDate" name="ScheduleDate" required />
+                        </div>
+                    </div>
+                    <div class="row mt-2 content-center-row">
+                        <div class="col-md-12">
+                            <label for="DayScheduleDetailsText" class="text-dark">Schedule Details Text</label>
+                            <textarea id="DayScheduleDetailsText" class="form-control" name="DayScheduleDetailsText" rows="5" asp-for="DayScheduleDetailsText"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="IdScheduleMaster" name="IdScheduleMaster" hidden value="@(Model?.IdScheduleMaster ?? 0)" />
+                <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" />
+                <input type="text" class="form-control" asp-for="IsActive" id="IsActive" name="isActive" hidden value="@(Model?.IsActive ?? true)" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var eventVersion = @Html.Raw(JsonSerializer.Serialize(eventVersionDto));
+    console.log(eventVersion)
+    var today = new Date().toISOString().split('T')[0];
+    $("#ScheduleDate").attr("min", today);
+
+    if (eventVersion.EventStartDate != null){
+        var minDate = eventVersion.EventStartDate.split('T')[0];
+        $("#ScheduleDate").attr("min", minDate);
+    }
+
+    if (eventVersion.EventEndDate != null){
+        var maxDate = eventVersion.EventEndDate.split('T')[0];
+         $("#ScheduleDate").attr("max", maxDate);
+    }
+
+    $("#scheduleForm").on("submit", async function (event) {
+        event.preventDefault();
+        var id = parseInt($("#IdScheduleMaster").val()) > 0
+        var form = document.getElementById("scheduleForm")
+        var formData = new FormData(form)
+
+        const URL = id > 0 ? `/Schedule/EditSchedule` : `/Schedule/AddSchedule`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#scheduleModal").modal('hide')
+                $("#root").html(data.html)
+                $("#dt-length-0").css("margin-right", "8px")
+            })
+    })
+</script>

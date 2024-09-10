@@ -1,0 +1,117 @@
+﻿@model SpeakersDto
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h5 class="modal-title text-light fs-5" id="staticBackdropLabel">Edit Speaker</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="addEvent" id="editSpeakerForm" asp-action="EditSpeaker" asp-controller="Event" enctype="multipart/form-data">
+                <div class="modal-body">                    
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Name<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" name="SpeakerName" asp-for="SpeakerName" required maxlength="90">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">About Speaker <i class="text-danger">*</i></label>
+                        <textarea id="AboutSpeaker" class="form-control" name="AboutSpeaker" rows="5" maxlength="1900" asp-for="AboutSpeaker" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Designation<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" name="SpeakerDesignation" asp-for="SpeakerDesignation" required maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Order Number<i class="text-danger">*</i></label>
+                        <input type="number" class="form-control" name="OrderNumber" asp-for="OrderNumber" required >
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Speaker Image<i class="text-danger">*</i></label>
+                        <input type="file" class="form-control" id="SpeakerLogoMap" name="SpeakerLogoMap" asp-for="SpeakerLogoMap">                        
+                        <div class="text-danger" id="fileSizeError" style="display:none;">File size should be less than 120 KB</div>
+                    </div>
+                    <div class="mb-3">
+                        <img src="@Model.SpeakerImage" style="max-width: 24%; height: auto;" />
+                        <div style="float:right;margin-top:11%">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>                   
+                    <input type="hidden" value="@Model.IdSpeaker" asp-for="IdSpeaker" name="IdSpeaker" />
+                    <input type="hidden" value="@Model.IdEvent" asp-for="IdEvent" name="IdEvent" />
+                    <input type="hidden" value="@Model.IdEventVersion" asp-for="IdEventVersion" name="IdEventVersion" />
+                    <input type="hidden" value="@Model.Status" asp-for="Status" name="Status" />
+                </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    debugger;
+    $("#editSpeakerForm").on("submit", async function (event) {
+        debugger
+        event.preventDefault();
+        var form = document.getElementById('editSpeakerForm');
+        var formData = new FormData(form);
+        try {
+            let response = await fetch('/Event/EditSpeaker', {
+                method: 'POST',
+                body: formData
+            });
+            let data = await response.json();
+            if (data.success) {
+                // swal({
+                //     title: "Success",
+                //     text: `Speaker Updated successfully.`,
+                //     icon: "success",
+                // }).then(() => {
+                //     $('#staticBackdrop').modal('hide');
+                //     // Return a new promise to chain the next steps
+                // }).then(async () => {
+                $('#staticBackdrop').modal('hide');
+                    const id = data.idEvent;
+                    const idEventversion = data.idEventVersion;
+                    const URL = `/Event/EditEvent?id=${id}&idEventVersion=${idEventversion}&view=Speakers`;
+                    let editResponse = await fetch(URL, {
+                        method: 'Get',
+                    });
+                    let editData = await editResponse.text();
+                    var parsedData = JSON.parse(editData);
+                    $("#root").html(parsedData.html);
+                // }).catch(error => {
+                //     console.error('Error:', error);
+                // });
+            } else {
+                swal({
+                    title: "Error",
+                    text: `Please Add Event Details.`,
+                    icon: "warning",
+                }).then(() => {
+                    $('#staticBackdrop').modal('hide');
+                });
+            }
+        } catch (error) {
+            debugger
+            console.error('Error:', error);
+            swal({
+                title: "Error",
+                text: `An error occurred.`,
+                icon: "error",
+            }).then(() => {
+                $('#staticBackdrop').modal('hide');
+            });
+        }
+    });
+    document.getElementById('SpeakerLogoMap').addEventListener('change', function () {
+        var file = this.files[0];
+        var fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.size > 120 * 1024) { // 120 KB in bytes
+            fileSizeError.style.display = 'block';
+            this.value = ''; // Clear the file input
+        } else {
+            fileSizeError.style.display = 'none';
+        }
+    });
+</script>

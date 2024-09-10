@@ -1,0 +1,735 @@
+﻿@using InfoMed.Utils;
+@model EventViewModel;
+@{
+    var backgroundIMage = Url.Content(Model.EventVersion.EventBackgroundImage);
+    Random random = new Random();
+    int scheduleMasterCounter = 0;
+    int scheduleMasterCounter_2 = 0;
+    var VenueLatLong = Model.EventVersion.VenueLatLong.Split(",");
+    var latitude = "0";
+    var longitude = "0";
+
+    if (VenueLatLong.Length >= 2)
+    {
+        latitude = VenueLatLong[0];
+        longitude = VenueLatLong[1];
+    }
+
+    var platinumSponcers = Model.Sponsers.Where(x => x.SponsorType == Constants.PlatinumSponcers).ToList();
+    var goldSponcers = Model.Sponsers.Where(x => x.SponsorType == Constants.GoldSponcers).ToList();
+    var silverSponcers = Model.Sponsers.Where(x => x.SponsorType == Constants.SilverSponcers).ToList();
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Infomed</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon" />
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet" />
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css"
+          rel="stylesheet" />
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+          rel="stylesheet" />
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css"
+          rel="stylesheet" />
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Main CSS File -->
+    <link href="~/assets/css/main.css" rel="stylesheet" />
+    <link href="~/assets/css/Font-icon.css" rel="stylesheet" />
+</head>
+<style>
+    .navmenu li:hover > a,
+    .navmenu .active,
+    .navmenu .active:focus {
+        color: @Model.EventVersion.EventBackgroundColor !important;
+    }
+
+    .Event_Schedules_dt .nav-tabs .nav-item .nav-link.active {
+        border-bottom: 3px solid @Model.EventVersion.EventBackgroundColor !important;
+    }
+
+    .ES_Time::before {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 18px;
+        background-color: @Model.EventVersion.EventBackgroundColor !important;
+        top: 10px;
+        left: 0px;
+    }
+
+    #preloader:before {
+        content: "";
+        position: fixed;
+        top: calc(50% - 30px);
+        left: calc(50% - 30px);
+        border: 6px solid #ffffff;
+        border-color: @Model.EventVersion.EventBackgroundColor transparent @Model.EventVersion.EventBackgroundColor transparent;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: animate-preloader 1.5s linear infinite;
+    }
+
+    .Sponsors_img {
+        padding: 10px;
+    }
+    
+
+    .Sponsors_img_in {
+        background-color: #fff;
+        /* min-height: 100px; */
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .Sponsors_img img {
+        width: 100%;       
+    }
+   
+</style>
+
+<body class="index-page">
+    <header id="header" class="header fixed-top">
+        <div class="branding d-flex align-items-cente">
+            <div class="container position-relative d-flex align-items-center">
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+                <a href="https://infomed.com.my" class="logo d-flex align-items-center">
+                    <img src="~/assets/img/logo.png" alt="" />
+                </a>
+                <nav id="navmenu" class="navmenu ms-auto">
+                    <ul>
+                        <li>
+                            <a href="#" class="active" >Home<br /></a>
+                        </li>
+                        <li><a href="#Event_Schedules">Topics</a></li>
+                        <li><a href="#Conference_Fees">Conference fee</a></li>
+                        <li><a href="#footer">Contact</a></li>
+                    </ul>
+                </nav>
+                @if (Model.EventVersion.ShowBookTicketButton == true)
+                {
+                    <div class="ps-5">
+                        <button class="btn-book register-btn-1" onclick="SignIn('@Model.EventVersion.IdEvent','@Model.EventVersion.IdVersion')"
+                        style="background-image:linear-gradient(70deg, @Model.EventVersion.EventBackgroundColor 0%, @Model.EventVersion.EventBackgroundColor 100%) !important">
+                            <img src="~/assets/img/Icon1.png" />
+                            Book Tickets
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Hero Section -->
+        <section id="hero" class="hero section" style="background-image:@(backgroundIMage != null ? $@"url({backgroundIMage})":"url(../img/banner1.jpg)")">
+            <div class="elementor-background-overlay" style="background-image:linear-gradient(70deg, @Model.EventVersion.EventBackgroundColor 0%, @Model.EventVersion.EventBackgroundColor 100%)"></div>
+            <div class="container position-relative"
+                 data-aos="fade-up"
+                 data-aos-delay="100">
+                <div class="row gy-5 justify-content-center text-center">
+                    <div class="col-lg-10 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                        <h2>
+                            @Html.Raw(Model.EventVersion.EventHomeContent)
+                        </h2>
+                        <div class="row m-0 py-3">
+                            <div class="col-lg-12 p-2 d-flex justify-content-center">
+                                <div class="calendar3_box">
+                                    <h3 class="text-light"><i class="bi bi-calendar3 me-3"></i> &nbsp; @Utils.FormatDateRange(Model.EventVersion.EventStartDate,Model.EventVersion.EventEndDate)</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        @if (Model.TextContentAreas.Count() > 0)
+        {
+            <!-- /Hero Section -->
+            <section class="Objective_info">
+                <div class="container">
+                    <div class="row no-gutters">
+                        <div class="col-lg-12">
+                            <div class="row no-gutters">
+                                @foreach(var text in Model.TextContentAreas){
+                                <div class="col-lg-12 col-md-12 QuickFacts-item p-2 aos-init aos-animate"
+                                 data-aos="fade-up">
+                                    <div class="Objective_info_head">
+                                        <h3>@text.ContentHeader</h3>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 QuickFacts-item p-2 aos-init aos-animate"
+                                 data-aos="fade-up"
+                                 data-aos-delay="100">
+                                    <section class="Objective_info_counts">
+                                        <div class="Objective_info_counts_inner">
+                                            <div class="row m-0">
+                                                    <div class="p-2">
+                                                        <p>
+                                                            @Html.Raw(text.ContentText)
+                                                        </p>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        }
+
+        @if(Model.Sponsers.Count() > 0){
+            <!-- Sponsors Section -->
+            <section id="Sponsors" class="Sponsors section" style="background-image:url(/assets/img/contact_page_form_bg.jpg);">
+                <div class="container Sponsors-title" data-aos="fade-up">
+                    <h3 class="text-dark" style="font-size: 48px;font-weight: 800;">Sponsors</h3>
+                </div>
+                <!-- End Section Title -->
+                <div class="container">
+                    @if (platinumSponcers.Count() > 0)
+                    {
+                        <div class="row m-0">
+                            <div class="col-lg-2 col-md-3 p-3">
+                                <div class="Sponsors_Name">
+                                    <h3>Platinum</h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-md-9 p-2">
+                                <div class="Sponsors_img_box row m-0">
+                                    @foreach (var item in platinumSponcers)
+                                    {
+                                        var mediaPath = Url.Content(item.SponsorLogo);
+                                         <a href="@item.SponsorUrl" class="col-lg-3 col-md-3 col-6 Sponsors_img" target="_blank">
+                                            <div class="Sponsors_img_in">
+                                            <img src="@mediaPath"/>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (goldSponcers.Count() > 0)
+                    {
+                        <div class="row m-0">
+                            <div class="col-lg-2 col-md-3 p-3">
+                                <div class="Sponsors_Name">
+                                    <h3>Gold</h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-md-9 p-2">
+                                <div class="Sponsors_img_box row m-0">
+                                    @foreach (var item in goldSponcers)
+                                    {
+                                        var mediaPath = Url.Content(item.SponsorLogo);
+                                        <a href="@item.SponsorUrl" class="col-lg-3 col-md-3 col-6 Sponsors_img" target="_blank">
+                                            <div class="Sponsors_img_in">
+                                                <img src="@mediaPath" />
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (silverSponcers.Count() > 0)
+                    {
+                        <div class="row m-0">
+                            <div class="col-lg-2 col-md-3 p-3">
+                                <div class="Sponsors_Name">
+                                    <h3>Silver</h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-md-9 p-2">
+                                <div class="Sponsors_img_box row m-0"> 
+                                    @foreach (var item in silverSponcers)
+                                    {
+                                        var mediaPath = Url.Content(item.SponsorLogo);
+                                        <a href="@item.SponsorUrl" class="col-lg-3 col-md-3 col-6 Sponsors_img" target="_blank">
+                                              <div class="Sponsors_img_in">
+                                            <img src="@mediaPath"  />
+                                                  </div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+               </div>
+        </section>
+        }
+
+        @if (Model.Speakers.Count() > 0)
+        {
+            <!-- Event Speakers Section -->
+            <section id="Event_Speakers" class="Event_Speakers section">
+                <div class="container section-title text-center" data-aos="fade-up">
+                    <h2>
+                        Meet our first speakers. <br />
+                        We're adding more every week.
+                    </h2>
+                </div>
+                <!-- End Section Title -->
+                <div class="container">
+                    <div class="row">
+                        @foreach (var item in Model.Speakers.OrderBy(x => x.OrderNumber).ToList())
+                        {
+                            var mediaPath = Url.Content(item.SpeakerImage);
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <div class="spekaer-box-style"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#@item.SpeakerName.Replace(" ","").Trim()">
+                                    <figure class="speaker-image">
+                                        <img 
+                                     src="@mediaPath"
+                                     class="attachment-full size-full"
+                                     alt="Grace Amelia"
+                                     loading="lazy" />
+                                        <span class="speaker-hover-btn"
+                                        style="background-color:lightgreen;"
+                                      data-bs-toggle="modal"
+                                              data-bs-target="#@Utils.RemoveSpecialCharacters(item.SpeakerName)">Read More</span>
+                                    </figure>
+                                    <div class="speaker-footer-content">
+                                        @if(item.SpeakerName.Length > 28)
+                                        {
+                                            <div>
+                                                <h3 class="speaker-title">@item.SpeakerName</h3>
+                                            </div>
+
+                                        }
+                                        else
+                                        {
+                                            <div style="padding-bottom: 1.1rem">
+                                                <h3 class="speaker-title">@item.SpeakerName</h3>
+                                            </div>
+                                        }
+                                        
+                                        <p class="speaker-designation">@item.SpeakerDesignation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        }
+
+        @if (Model.ScheduleMaster.Count > 0)
+        {
+            <!-- Event Schedules Section -->
+            <section id="Event_Schedules" class="Event_Schedules section">
+                <!-- Event Schedule Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Events</h2>
+                    <div class="row m-0">
+                        <div class="col-lg-6">
+                            <h3>Event Schedules</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Section Title -->
+                <div class="container">
+                    <div class="Event_Schedules_dt">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            @foreach (var item in Model.ScheduleMaster)
+                            {
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link @(scheduleMasterCounter == 0 ? "active":"")"
+                                        id="@item.DayScheduleName.Replace(" ","").Trim()-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#@item.DayScheduleName.Replace(" ","").Trim()"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="@item.DayScheduleName.Replace(" ","").Trim()"
+                                        aria-selected="true">
+                                        <b>@item.DayScheduleName</b>
+                                        <p class="m-0">@Utils.GetSpecificDate(item.ScheduleDate)</p>
+                                    </button>
+                                </li>
+                                scheduleMasterCounter++;
+                            }
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            @foreach (var item in Model.ScheduleMaster)
+                            {
+                                <div class="tab-pane fade  @(scheduleMasterCounter_2 == 0 ? "active show":"")"
+                                     id="@item.DayScheduleName.Replace(" ","").Trim()"
+                                     role="tabpanel"
+                                     aria-labelledby="@item.DayScheduleName.Replace(" ","").Trim()-tab">
+                                    <div class="EventSchedules_dt_View">
+                                        <div class="EventSchedules_dt_View_head">
+                                            <h4>@item.DayScheduleDetailsText</h4>
+                                        </div>
+                                        <div class="mt-4 EventSchedules_dt_View_body">
+                                            @foreach (var obj in item.ScheduleDetailsDtos)
+                                            {
+                                                <div class="ES_DtVeiw">
+                                                    <div class="p-2 ES_Time">@Convert.ToDateTime(@obj.StartTime).ToString("hh:mm tt") – @Convert.ToDateTime(@obj.EndTime).ToString("hh:mm tt")</div>
+                                                    <div class="p-2 ES_conferencebox">
+                                                        @Html.Raw(obj.Topic)
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                scheduleMasterCounter_2++;
+                            }
+                    </div>
+                </div>
+            </div>
+        </section>
+        }
+        @if(Model.EventVersion.ShowHurryUpContent){
+    <!-- /Portfolio Section -->
+      <section id="Day_Counting" class="DayCountSection" 
+       style="background-image:linear-gradient(70deg, @Model.EventVersion.EventBackgroundColor 0%, @Model.EventVersion.EventBackgroundColor 100%)">
+      <div class="container section-title " data-aos="fade-up">
+        <div class="text-center">
+          <div id="countdown" class="countdown">
+            <div class="clock-image">
+              <img src="~/images/clock-image.png" />
+            </div>
+            <ul>
+              <li><span id="days"></span>days</li>
+              <li><span id="hours"></span>Hours</li>
+              <li><span id="minutes"></span>Minutes</li>
+              <li><span id="seconds"></span>Seconds</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        }
+        @if(Model.ConferenceFee.Count() > 0){
+        <!-- /Portfolio Section -->
+        <!-- Conference Fees Section -->
+        <section id="Conference_Fees" class="Conference_Fees section">
+            <div class="container section-title" data-aos="fade-up">
+                <h2 class="mb-0">Tickets</h2>
+                <h3>Conference Fees</h3>
+            </div>
+
+            <!-- End Section Title -->
+            <div class="container" data-aos="zoom-in" data-aos-delay="100">
+                <div class="row g-4 m-0">
+                        @foreach (var item in Model.ConferenceFee.OrderBy(fee => fee.OrderNumber))
+                        {
+                        <div class="col-lg-3 col-md-4 p-2">
+                            <div class="Conference_Fees-dt main_tickets"
+                                     style="background-image:linear-gradient(70deg, @Model.EventVersion.EventBackgroundColor 0%, @Model.EventVersion.EventBackgroundColor 100%) !important;border:2px solid @Model.EventVersion.EventBackgroundColor !important">
+                                <div class="mb-4">
+                                    <p>@item.FeeName</p>
+                                        @if (item.FeeDetailText.Length > 32)
+                                        {
+                                            <p >@item.FeeDetailText</p>
+                                             
+                                        }
+                                        else
+                                        {
+                                            <p style="padding-bottom: 1.5rem">@item.FeeDetailText</p>
+                                        }                                    
+                                    <h3>RM @item.Amount</h3>
+                                </div>
+                           @if (Model.EventVersion.ShowBookTicketButton == true)
+                           {
+                                <button class="btn-Reg register-btn-1" onclick="SignIn('@Model.EventVersion.IdEvent')">Registration</button>
+                           }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- Conference Fees Section -->
+        }
+
+        @if (Model.LastYearMemory.Count() > 0)
+        {
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="portfolio section Memories_yearBox">
+                <div class="container section-title" data-aos="fade-up">
+                    <div class="row m-0 justify-content-center">
+                        <div class="col-lg-9">
+                            <h2 class="mb-0">Gallery</h2>
+
+                            <h3>@Model.LastYearMemory.FirstOrDefault()?.LastYearMemoryHeader</h3>
+
+                            <p>
+                                @Model.LastYearMemory.FirstOrDefault()?.LastYearMemoryText
+                            </p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Section Title -->
+                <div class="container" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="isotope-layout"
+                     data-default-filter="*"
+                     data-layout="masonry"
+                     data-sort="original-order">
+                        <div class="row gy-4 isotope-container"
+                         data-aos="fade-up"
+                         data-aos-delay="200">
+                            @foreach (var item in Model.LastYearMemory)
+                            {
+
+                                @foreach (var obj in item.LastYearMemoryDetails)
+                                {
+                                    var mediaPath = Url.Content(obj.MediaPath);
+                                    @if (mediaPath is not null)
+                                    {
+                                        <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item isotope-item filter-app">
+                                            <div class="portfolio-content h-100">
+                                                <a href="@mediaPath"
+                                               data-gallery="portfolio-gallery-app"
+                                               class="glightbox">
+                                                    @if (obj.MediaType == "video/mp4")
+                                                    {
+                                                        <video width="320" height="240" controls>
+                                                            <source src="@mediaPath" type="video/mp4">
+                                                        </video>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@mediaPath"
+                                                         class="img-fluid"                                                          
+                                                         alt="" />
+
+                                                    }
+                                                </a>
+                                            </div>
+
+                                            @if (obj.MediaShortDesc?.Length > 10)
+                                            {
+                                                <div class="mt-2">
+                                                    <h3 class="portfolio-title">@obj.MediaShortDesc</h3>
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <div style="padding-bottom: 1.1rem" class="mt-2">
+                                                    <h3 class="portfolio-title">@obj.MediaShortDesc</h3>
+                                                </div>
+                                            }
+                                                                                  
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    <!-- End Portfolio Container -->
+                </div>
+            </div>
+        </section>
+        }
+
+        <!-- /Portfolio Section -->
+        <section id="Loaction_map" class="Loaction_map section">
+            <div class="icon-boxes position-relative"
+                 data-aos="fade-up"
+                 data-aos-delay="200">
+                <div class="container position-relative">
+                    <iframe src="https://www.google.com/maps?q=@latitude,@longitude&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            width="600"
+                            height="450"
+                            style="border: 0"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+        <!-- /Hero Section -->
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="container footer-top">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-4 footer-about">
+                    <a href="index.html" class="logo d-flex align-items-center">
+                        <img src="~/assets/img/logo1.png" />
+                    </a>
+                    <div id="footer-text-container">
+                        @Html.Raw(Model.EventVersion.FooterText)
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="/Event/TermsConditions">Terms of service</a></li>
+                        <li><a href="/Event/PrivacyPolicy">Privacy policy</a></li>
+                        <li><a onclick="openpdf()" style="cursor:pointer">Return & Refund Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-4 footer-contact text-center text-md-start">
+                    <p>
+                        This professional healthcare conference addresses topics that are
+                        transforming healthcare to be innovative and patient-centric
+                    </p>
+                    <div class="social-links d-flex mt-4">
+                        <a href="@Model.EventVersion?.FacebookLink" target="_blank" @(Model.EventVersion?.FacebookLink == null ? "hidden":"")><i class="bi bi-facebook"></i></a>
+                        <a  href="@Model.EventVersion?.TwitterLink" target="_blank" @(Model.EventVersion?.TwitterLink == null ? "hidden":"")><i class="bi bi-twitter"></i></a>
+                        <a href="@Model.EventVersion?.LinkedInLink"  target="_blank" @(Model.EventVersion?.LinkedInLink == null ? "hidden":"")><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container copyright text-center mt-4">
+            <p>
+                2024© <span>Copyright</span> <span class="copy_color">Infomed</span>.
+                <span>All Rights Reserved</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#"
+       id="scroll-top"
+       class="scroll-top d-flex align-items-center justify-content-center"
+       style="background:@Model.EventVersion.EventBackgroundColor !important;">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+    @foreach (var item in Model.Speakers)
+    {
+         var mediaPath = Url.Content(item.SpeakerImage);
+        <div class="modal fade"
+         id="@Utils.RemoveSpecialCharacters(item.SpeakerName)"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false"
+         tabindex="-1"
+         aria-labelledby="staticBackdropLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button"
+                            class="btn-close Speaker_btn"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    <!-- Blog Author Section -->
+                    <section id="blog-author" class="blog-author section">
+                        <div class="container">
+                            <div class="author-container d-flex align-items-center">
+                                <img src="@mediaPath"
+                                     class="rounded-circle flex-shrink-0"
+                                     alt="" />
+                                <div>
+                                    <h4 class="mb-0">@item.SpeakerName</h4>
+                                    <h6>@item.SpeakerDesignation</h6>
+                                    <p>
+                                        @item.AboutSpeaker
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- /Blog Author Section -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    }
+
+    <div id="signIn-container"></div>
+    <script>
+        document.querySelectorAll('#footer-text-container span').forEach(function (span) {
+            span.style.color = 'white';
+        });
+     
+        localStorage.setItem('location',window.location.pathname);
+     </script>
+
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="~/assets/js/main.js"></script>
+    <script>
+      var startdate = `@Html.Raw(Model.EventVersion.EventStartDate?.ToString("MM-dd-yyyy hh:mm:ss"))`
+
+      const targetDate =
+      new Date(startdate).getTime()
+
+        function updateTimer() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerHTML = `${days}`;
+      document.getElementById("hours").innerHTML = `${hours}`;
+      document.getElementById("minutes").innerHTML = `${minutes}`;
+      document.getElementById("seconds").innerHTML = `${seconds}`;
+
+      if (distance < 0) {
+        clearInterval(timerInterval);
+        document.getElementById("days").innerHTML = "0";
+        document.getElementById("hours").innerHTML = "0";
+        document.getElementById("minutes").innerHTML = "0";
+        document.getElementById("seconds").innerHTML = "0";
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+
+    function openpdf(){
+        window.open('@Url.Content("~/assets/InfoMedConferenceReturn.pdf")', '_blank');
+    }
+  </script>
+</body>
+</html>
+

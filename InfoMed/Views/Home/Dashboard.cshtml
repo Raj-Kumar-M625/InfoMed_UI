@@ -1,0 +1,32 @@
+﻿@{
+    LoginResponse user = ViewBag.sessionUser;
+    List<EventVersionDto> eventVersionDtos = ViewBag.Events;
+}
+<div class="d-flex justify-content-between align-items-center mt-2 mx-3">
+    <img src="~/images//HomePageLogo.png" width="300px" height="100px" style="object-fit:contain" />
+    <div>
+        <label class="text-secondary fs-4">|</label>
+        <a class="text-primary fs-4 fw-bold mx-2" asp-action="Index" asp-controller="Home">Events</a>
+        <label class="text-secondary fs-4">|</label>
+        <a class="text-primary fs-4 fw-bold mx-2" asp-action="Users" asp-controller="User">Users</a>
+        <label class="text-secondary fs-4">|</label>
+        <a class="text-primary fs-4 fw-bold mx-2">Reports</a>
+        <label class="text-secondary fs-4">|</label>
+    </div>
+</div>
+<div class="mt-5 mx-3 d-flex justify-content-between">
+    <div>
+        <h2 class="text-dark fs-5 fw-bold mt-1">Login By</h2>
+        <h2 class="text-dark fs-5 fw-bold mt-1">@user.UserName</h2>
+        <h2 class="text-dark fs-5 fw-bold mt-1">@user.LoginTime!.ToString("dd.MMMM.yyyy hh.mm tt")</h2>
+    </div>
+    <div class="w-50">
+        <h2 class="text-danger fs-5 fw-thin mt-1 fw-bold fs-5">Pending actions for approval</h2>
+        <hr class="mt-4" />
+        @foreach (var _event in eventVersionDtos)
+        {
+            <a asp-action="EditEvent" asp-controller="Event" asp-route-id="@_event.IdEvent" asp-route-idEventVersion="@_event.IdEventVersion" class="fw-bold fs-5 mx-5">@_event.EventName  - Version @_event.IdVersion</a>
+            <br/>
+        }
+    </div>
+</div>

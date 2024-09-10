@@ -1,0 +1,25 @@
+﻿@model String;
+<div class="modal fade" id="EventcontentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5" id="exampleModalLabel">Event Background Image</h4>
+                <button type="button" class="btn-close close-btn  bg-light" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="image-container" style="max-height: 500px; overflow-y: auto;">
+                    <img src="@Url.Content(Model)" class="img-fluid" alt="Image" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".close-btn").on('click', function () {
+        $("#EventcontentModal").modal('hide')
+    })
+</script>

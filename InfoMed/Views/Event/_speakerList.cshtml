@@ -1,0 +1,161 @@
+﻿@using InfoMed.Utils
+@model List<SpeakersDto>
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Speaker List</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <a id="addNewBtn" class="btn btn-primary">Add New</a>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <a id="addNewBtn" class="btn btn-primary">Add New</a>
+            }
+        }
+    </div>
+    <div id="sponsors-section" class="container mx-auto m-3 table-responsive-sm">
+
+        <table id="table2" class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th class="header-center">Speaker Name</th>
+                    <th class="header-center">Order Number</th>
+                    <th class="header-center">Image</th>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <th class="text-center header-center">Action</th>
+                        }
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <th class="text-center header-center">Action</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.SpeakerName</td>
+                        <td>@obj.OrderNumber</td>
+                        <td>
+                            <img src="@obj.SpeakerImage" style="max-width: 50px; height: auto;" />
+                        </td>
+                        @if (sessionDetails.UserRole == "Volunteer")
+                        {@if (eventStatus != "Submitted" && eventStatus != "Approved")
+                            {
+                                <td class="text-center">
+                                    <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btn-textContent-edit" onclick="editSpeaker('@obj.IdSpeaker')"></i>
+                                    <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteSpeaker('@obj.IdSpeaker')"></i>
+                                </td>
+                            }
+                        }
+                        else if (sessionDetails.UserRole == "Admin")
+                        {
+                            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                            {
+
+                                <td class="text-center">
+                                    <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btn-textContent-edit" onclick="editSpeaker('@obj.IdSpeaker')"></i>
+                                    <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteSpeaker('@obj.IdSpeaker')"></i>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="Add-Speaker">
+</div>
+<div id="EditSpeaker">
+</div>
+
+
+<script>
+    new DataTable('#table2', {
+        "bScrollCollapse": true,
+        "bPaginate": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        }, 
+        "order": [[1, 'asc']]
+    });
+    document.getElementById('addNewBtn').addEventListener('click', async function () {
+        var id = parseInt($("#idEventVersion").val())
+        if (id == 0) {
+            swal({
+                title: "",
+                text: "Please add event details.",
+                icon: "warning",
+            })
+            return
+        }
+
+        await fetch("/Event/AddSpeaker")
+            .then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                console.log(data)
+                $("#Add-Speaker").html(data.data);
+                $('#exampleModal').modal('show');
+            })
+
+    });
+
+
+    async function editSpeaker(speakerId) {
+        await fetch(`/Event/EditSpeaker?id=${speakerId}`).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#EditSpeaker").html(data.data)
+                $("#staticBackdrop").modal('show')
+            })
+    }
+
+    async function deleteSpeaker(idEventSpeaker) {
+        swal({
+            title: "Are you sure to delete?",
+            text: "",
+            icon: "warning",
+            dangerMode: true,
+            buttons: {
+                cancel: "Cancel",
+                confirm: "Ok",
+            },
+        }).then(async (result) => {
+            if (result) {
+                await fetch(`/Event/DeleteSpeaker?id=${idEventSpeaker}`).then(response => response.text())
+                    .then(response => {
+                        debugger
+                        var data = JSON.parse(response)
+                        $("#root").html(data.html);
+                    })
+            }
+        })
+    }
+</script>
+
+

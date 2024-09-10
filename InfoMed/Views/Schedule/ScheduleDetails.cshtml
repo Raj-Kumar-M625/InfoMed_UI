@@ -1,0 +1,179 @@
+﻿@using InfoMed.Utils
+@model List<ScheduleDetailsDto>;
+@{
+    int idScheduleMaster = ViewBag.IdScheduleMaster;
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+<div class="modal fade p-3" id="scheduleDetailsModal-@idScheduleMaster" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">Schedule Details</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="container table-responsive-lg">
+                <div class="d-flex justify-content-between mt-3 mb-4">
+                    <h3 class="fs-4 fw-bold" style="visibility:hidden">Schedule Details</h3>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <button class="btn btn-primary btn-sm" onclick="addScheduleDetails('@idScheduleMaster')">Add Schedule Details</button>
+                        }
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <button class="btn btn-primary btn-sm" onclick="addScheduleDetails('@idScheduleMaster')">Add Schedule Details</button>
+                        }
+                    }
+                </div>
+                <table id="scheduleDetailTable" class="w-100 table table-bordered">
+                    <thead>
+                        <tr>
+                            <th  class="header-center">Topic Name</th>
+                            <th class="header-center text-center">Topic</th>
+                            <th  class="header-center">Start Time</th>
+                            <th  class="header-center">End Time</th>
+                            @if (sessionDetails.UserRole == "Volunteer")
+                            {
+                                
+                                @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                                {
+                                    <th  class="text-center header-center">Action</th>
+                                }
+                                else
+                                {
+                                    if (eventStatus == "Submitted")
+                                    {
+                                        
+                                        
+                                    }                               
+
+
+                                 }
+                            }
+                            else if (sessionDetails.UserRole == "Admin")
+                            {
+                                @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                                {
+                                    <th  class="text-center header-center">Action</th>
+                                }
+                                else
+                                {
+                                    if (eventStatus == "Submitted")
+                                    {
+
+
+                                    }
+
+
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in @Model)
+                        {
+                            <tr>
+                                <td>@item?.TopicName</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="viewTextContent(`@null`,`@item.IdScheduleDetail`)">View</button>
+                                </td>
+                                <td>@Convert.ToDateTime(@item.StartTime).ToString("hh:mm tt")</td>
+                                <td>@Convert.ToDateTime(@item.EndTime).ToString("hh:mm tt")</td>
+                                @if (sessionDetails.UserRole == "Volunteer")
+                                {
+                                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                                    {
+                                        <td class="text-center">
+                                            <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editScheduleDetails('@item.IdScheduleDetail')"></i>
+                                            <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteScheduleDetails('@item.IdScheduleDetail','@item.IdScheduleMaster')"></i>
+                                        </td>
+                                    }else
+                                    {
+                                        
+                                    }
+                                }  else if(sessionDetails.UserRole == "Admin"){
+
+                                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                                    {
+                                        <td class="text-center">
+                                            <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editScheduleDetails('@item.IdScheduleDetail')"></i>
+                                            <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteScheduleDetails('@item.IdScheduleDetail','@item.IdScheduleMaster')"></i>
+                                        </td>
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                                    </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="text" id="idScheduleMaster-1" hidden value="@idScheduleMaster" />
+<div id="content-details"></div>
+
+<script type="text/javascript" src="~/js/Schedule.js" defer></script>
+<script>
+    $(document).ready(function () {
+        new DataTable('#scheduleDetailTable', {
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "language": {
+                "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+            },
+            "columnDefs": [
+                { "width": "70%", "targets": 0 }, // Topic Name column
+                { "width": "10%", "targets": 1 }, // Topic column
+                { "width": "5%", "targets": 2 }, // Start Time column
+                { "width": "5%", "targets": 3 }, // Action column
+            ],
+                 "searching": false,
+            "ordering": false
+        });
+
+        $("#dt-length-0").css("margin-right", "8px");
+
+        $(".btn-close").on('click', function () {
+            var idScheduleMaster = parseInt($("#idScheduleMaster-1").val());
+            $(`#scheduleDetailsModal-${idScheduleMaster}`).modal('hide');
+        });
+    });
+</script>
+
+<style>    
+    #scheduleDetailTable th, #scheduleDetailTable td {
+        padding: 3px 10px; /* Adjust the padding as needed */
+    }
+    #scheduleDetailTable th:nth-child(1), #scheduleDetailTable td:nth-child(1) {
+        width: 35%;
+    }
+
+    #scheduleDetailTable th:nth-child(2), #scheduleDetailTable td:nth-child(2) {
+        width: 10%;
+    }
+
+    #scheduleDetailTable th:nth-child(3), #scheduleDetailTable td:nth-child(3) {
+        width: 8%;
+    }
+
+    #scheduleDetailTable th:nth-child(4), #scheduleDetailTable td:nth-child(4) {
+        width: 8%;
+    }
+
+    #scheduleDetailTable th:nth-child(5), #scheduleDetailTable td:nth-child(5) {
+        width: 6%;
+    }
+</style>

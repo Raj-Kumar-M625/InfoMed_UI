@@ -1,0 +1,108 @@
+﻿@using InfoMed.Utils
+@model List<TextContentAreasDto>;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Text Content Areas</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <button class="btn btn-primary" id="btn-text-content" onclick="addTextContentAreas()">Add Text Content</button>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <button class="btn btn-primary" id="btn-text-content" onclick="addTextContentAreas()">Add Text Content</button>
+            }
+        }
+
+    </div>
+    <table id="textContentAreaTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" class="content-header header-center">Content Header</th>
+                <th scope="row" class="header-center">Content Text</th>
+                <th scope="row" class="order-number header-center">Order Number</th>
+                @if (sessionDetails.UserRole == "Volunteer")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+                else if (sessionDetails.UserRole == "Admin")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+            </tr>
+        </thead>    
+        <tbody>
+            @foreach (var _event in @Model)
+            {
+                <tr>
+                    <td>@_event.ContentHeader</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="viewTextContent(`@_event.IdTextContentArea`,@null)">View</button>
+                    </td>
+                    <td>@_event.OrderNumber</td>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {@if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btn-textContent-edit" onclick="editTextContent('@_event.IdTextContentArea')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteTextContentArea('@_event.IdTextContentArea')"></i>
+                            </td>
+
+                        }
+
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" id="btn-textContent-edit" onclick="editTextContent('@_event.IdTextContentArea')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer" onclick="deleteTextContentArea('@_event.IdTextContentArea')"></i>
+                            </td>
+                        }
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="content"></div>
+
+<script type="text/javascript" src="~/js/TextContentAreas.js"></script>
+
+<script>
+    new DataTable('#textContentAreaTable', {
+        "bScrollCollapse": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        },
+        "bPaginate": true,
+        "order": [[2, 'asc']],
+        "columnDefs": [
+            { "width": "70%", "targets": 0 }, // Content Header column
+            { "width": "10%", "targets": 2 }  // Order Number column
+        ]
+    });
+    $("#dt-length-0").css("margin-right", "8px")
+</script>

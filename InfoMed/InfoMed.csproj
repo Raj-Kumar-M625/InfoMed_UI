@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Views\TextContentAreas\NewFolder\**" />
+	  <Content Remove="Views\TextContentAreas\NewFolder\**" />
+	  <EmbeddedResource Remove="Views\TextContentAreas\NewFolder\**" />
+	  <None Remove="Views\TextContentAreas\NewFolder\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="log4net" Version="2.0.17" />
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+</Project>

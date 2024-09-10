@@ -1,0 +1,117 @@
+﻿@using InfoMed.Utils
+@model List<LastYearMemoryDto>;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var modeld = @Model;
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Last Year Memories</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <button class="btn btn-primary" onclick="addLastYearMaster()">Add LastYearMemories</button>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <button class="btn btn-primary" onclick="addLastYearMaster()">Add LastYearMemories</button>
+            }
+        }
+    </div>
+    <table id="LastYearMasterTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" class="header-center">Last Year Memory Header</th>
+                <th scope="row" class="header-center">Last Year Memory Text</th>
+                <th scope="row" class="header-center">Media Type</th>
+                <th scope="row" class="header-center">Media Content</th>
+                <th scope="row" class="header-center">Order</th>
+                @if (sessionDetails.UserRole == "Volunteer")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+                else if (sessionDetails.UserRole == "Admin")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.OrderBy(x => x.LastYearMemoryDetail?.OrderNumber))
+            {
+                <tr>
+                    <td>@item.LastYearMemoryHeader</td>
+                    <td>@item.LastYearMemoryText</td>
+                    <td>@item.LastYearMemoryDetail?.MediaType</td>
+                    <td><button type="button" class="btn btn-primary" onclick="viewMediaContent(`@item.IdLastYearMemory`)">View</button></td>
+                    <td>@item.LastYearMemoryDetail?.OrderNumber</td>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editLastYearMaster('@item.IdLastYearMemory')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer mx-2" onclick="deleteLastYearMaster('@item.IdLastYearMemory')"></i>
+                            </td>
+                        }
+                    }
+                    else if (sessionDetails.UserRole == "Admin")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <td class="text-center">
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editLastYearMaster('@item.IdLastYearMemory')"></i>
+                                <i class="bi bi-trash fs-5 cursor-pointer mx-2" onclick="deleteLastYearMaster('@item.IdLastYearMemory')"></i>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="content-master">
+</div>
+<div id="content"></div>
+<script type="text/javascript" src="~/js/LastYear.js"></script>
+<script>
+    new DataTable('#LastYearMasterTable', {
+        "bScrollCollapse": true,
+        "bPaginate": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        },
+        "order": [[4, 'asc']]
+    });
+    $("#dt-length-0").css("margin-right", "8px")
+
+    async function viewMediaContent(content) {
+        debugger
+        await fetch(`/LastYearMemories/ViewMediaContent?mediaContent=${content}`)
+            .then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#content").html(data.html)
+                $("#MediacontentModal").modal('show')
+            })
+    }
+
+</script>

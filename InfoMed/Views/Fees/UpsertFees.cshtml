@@ -1,0 +1,144 @@
+﻿@using InfoMed.Utils
+@model ConferenceFeeDto;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    int eventVersion = session.GetEventVersion();
+    var eventDetails = ViewBag.EventDetials;
+}
+
+<div class="modal fade" id="feesModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-slate-700">
+                <h4 class="modal-title text-light fs-5">@(Model?.IdConferenceFee > 0 ? "Edit Fee" : "Add Fee")</h4>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="feesForm">                
+                <div class="modal-body">
+                    <div class="row content-center-row">
+                        <div class="col-md-12">
+                            <label for="FeeName" class="text-dark">Fees Name<i class="text-danger">*</i></label>
+                            <input type="text" id="FeeName" class="form-control p-2" asp-for="FeeName" name="FeeName" required maxlength="180" />
+                        </div>                        
+                    </div>
+                    <div class="row mt-2 content-center-row">
+                        <div class="col-md-12">
+                            <label for="FeeDetailText" class="text-dark">Fee Details Text<i class="text-danger">*</i></label>
+                            <textarea id="FeeDetailText" class="form-control" name="FeeDetailText" rows="5" asp-for="FeeDetailText" required maxlength="990"></textarea>
+                        </div>
+                    </div>
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="MinimumPeopleCount" class="text-dark">Minimum People Count <i class="text-danger">*</i></label>
+                            <input type="number" id="MinimumPeopleCount" class="form-control p-2" asp-for="MinimumPeopleCount" name="MinimumPeopleCount" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="OrderNumber" class="text-dark">Order Number<i class="text-danger">*</i></label>
+                            <input type="number" id="OrderNumber" class="form-control p-2" asp-for="OrderNumber" name="OrderNumber" required />
+                        </div>                       
+                    </div>
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="Amount" class="text-dark">Amount<i class="text-danger">*</i></label>
+                            <input type="number" id="Amount" class="form-control p-2" asp-for="Amount" name="Amount" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="DayCount" class="text-dark">Day Count<i class="text-danger">*</i></label>
+                            <input type="number" id="DayCount" class="form-control p-2" asp-for="DayCount" name="DayCount" required max="@eventDetails?.NoOfDays" onchange="checkMaxValue(this)" />
+                        </div>
+                    </div>
+
+                    <div class="row content-center-row">
+                        <div class="col-md-6">
+                            <label for="ApplicableStartDate" class="text-dark">Start Date<i class="text-danger">*</i></label>
+                            <input type="date" class="form-control" id="ApplicableStartDate" name="ApplicableStartDate" asp-for="ApplicableStartDate" required min="" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ApplicableEndDate" class="text-dark">End Date<i class="text-danger">*</i></label>
+                            <input type="date" class="form-control" id="ApplicableEndDate" name="ApplicableEndDate" asp-for="ApplicableEndDate" required />
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <input type="text" class="form-control" id="IdConferenceFee" name="IdConferenceFee" hidden value="@(Model?.IdConferenceFee ?? 0)" />
+                <input type="text" class="form-control" name="IdEvent" hidden value="@(Model?.IdEvent ?? eventId)" />
+                <input type="text" class="form-control" id="EventEndDate" hidden value="@(eventDetails?.EventEndDate ?? null)" />
+                <input type="text" class="form-control" id="EventDays" hidden value="@(eventDetails?.NoOfDays ?? null)" />
+                <input type="text" class="form-control" name="IdEventVersion" hidden value="@(Model?.IdEventVersion ?? eventVersion)" />
+                <input type="text" class="form-control" asp-for="IsActive" id="IsActive" name="isActive" hidden value="@(Model?.IsActive ?? true)" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 float-start" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4 float-start">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/Fees.js" defer></script>
+<script> 
+    debugger
+    var today = new Date().toISOString().split('T')[0];
+    var endate = $('#EventEndDate').val();
+    var parts = endate.split(' ');
+    var datePart = parts[0];
+    var dateParts = datePart.split('-');
+    var day = dateParts[0]; // '17'
+    var month = dateParts[1]; // '07'
+    var year = dateParts[2]; // '2024'
+
+    // Reformat into 'YYYY-MM-DD HH:mm:ss'
+    var formattedDate = year + '-' + month + '-' + day;
+    $("#ApplicableStartDate").attr("min", today);
+    $("#ApplicableEndDate").attr("max", formattedDate);
+
+    $("#ApplicableStartDate").on("change", function () {
+        var startDate = $(this).val();
+        $("#ApplicableEndDate").val('');
+        $("#ApplicableEndDate").attr("min", startDate);
+        $("#ApplicableEndDate").attr("max", formattedDate);
+    });
+
+    $("#ApplicableEndDate").on("change", function () {
+        var startDate = $(this).val();
+        // $("#ApplicableStartDate").attr("min", startDate);
+        $("#ApplicableEndDate").attr("max", formattedDate);
+    });
+
+    function checkMaxValue(input) {
+        // Parse the value as an integer
+        var value = parseInt(input.value);
+
+        // Check if the value exceeds the maximum allowed
+        if (value > parseInt(input.max)) {
+            // Reset the input value to the maximum allowed
+            input.value = '';
+        }
+    }
+    $("#feesForm").on("submit", async function (event) {
+        debugger
+        event.preventDefault();
+        var id = parseInt($("#IdConferenceFee").val()) > 0
+        var form = document.getElementById("feesForm")
+        var formData = new FormData(form)
+
+        const URL = id > 0 ? `/Fees/EditSchedule` : `/Fees/AddFees`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                var data = JSON.parse(response)
+                $("#feesModal").modal('hide')
+                $("#root").html(data.html)
+                // swal({
+                //     title: "Success",
+                //     text: `Fees ${id > 0 ? 'updated' : 'added'} successfully.`,
+                //     icon: "success",
+                // })
+                $("#dt-length-0").css("margin-right", "8px")
+            })
+    })
+</script>

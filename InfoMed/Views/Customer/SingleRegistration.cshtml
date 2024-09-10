@@ -1,0 +1,259 @@
+﻿@using System.Text.Json
+@using InfoMed.Utils
+@model RegistrationDto;
+@{
+    List<ConferenceFeeDto> conferenceFees = ViewBag.ConferenceFees;
+    PaymentDetailsDto paymentDetails = ViewBag.Payment;
+    List<Country> countries = ViewBag.Countries;
+    Session session = new Session(new HttpContextAccessor());
+    EventVersionDto eventVersionDto = session.GetEvent();
+}
+
+<form id="register-form" action="">
+    <div class="container-fluid">
+        <div class="row  content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Full Name<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" name="name" asp-for="Name" required />
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Email<i class="text-danger">*</i></label>
+                <input type="email" class="form-control" name="emailID" asp-for="EmailID" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Mobile Number</label>
+                <input type="text" class="form-control" asp-for="MobileNumber" name="mobileNumber" />
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Company<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" asp-for="CompanyName" name="companyName" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Country<i class="text-danger">*</i></label>
+                <select class="form-select" asp-for="CountryName" name="countryName" required>
+                    <option value="">Select</option>
+                    @foreach (var country in countries)
+                    {
+                        <option value="@country.CountryName" selected=@(country.ISDCode == "60" ? true:false)>(+@country.ISDCode) @country.CountryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 m-2">
+                <label>Zip Code<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" asp-for="ZipCode" name="zipCode" required />
+            </div>
+        </div>
+        <div class="row content-center-row">
+            <div class="col-md-4 m-2">
+                <label>Address<i class="text-danger">*</i></label>
+                <input type="text" class="form-control" asp-for="Address" name="address" required />
+            </div>
+            <div class="col-md-4 m-2" style="visibility:hidden">
+                <input asp-for="RegType" name="regType" value="Single Registration" />
+                <input asp-for="NoOfPersons" name="noOfPersons" value="1" />
+                <input asp-for="IdEvent" name="idEvent" value="@Model?.IdEvent" />
+                <input asp-for="IdRegistration" name="idRegistration" value="@Model?.IdRegistration" />
+            </div>
+        </div>
+        <div class="row content-center-row m-2">
+            <div class="col-md-4 d-flex conference-fees">
+                @foreach (var fee in conferenceFees.OrderBy(fee => fee.OrderNumber))
+                {
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox"  class="form-check checkbox" id="conferenceFee-@fee.IdConferenceFee" @(Model?.IdRegistration > 0 ? "disabled":"") />
+                    </div>
+                    <div class="col-sm-6 mx-2">
+                        <div class="card conferenceFee-@fee.IdConferenceFee">
+                            <div class="card-body">
+                                <h6>@fee.FeeName</h6>
+                                <h6>RM @fee.Amount</h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-4" style="visibility:hidden">
+                <input />
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center flex-column align-items-center mx-2">
+            <h2 class="text-center mb-3">Your Fee MYR <span class="amount">0.00</span></h2>
+            @Html.Raw(paymentDetails?.PaymentTextContent)
+            @if (Model?.IdRegistration == 0 || Model == null)
+            {
+                <button type="button" class="col-md-4 mt-4 btn text-light" @((bool)eventVersionDto.ShowPayNowButton ? "":"hidden") data-bs-toggle="modal" data-bs-target="#exampleModal" value="Pay Now" style="background:#6387f2;">Pay Now</button>
+                <button type="submit" class="col-md-4 mt-4 btn text-light" @((bool)eventVersionDto.ShowPayAtVenueButton ? "":"hidden") value="Register And Pay At Venue" style="background:#6387f2;">Register And Pay At Venue</button>
+            }
+            else
+            {
+                <button type="submit" class="col-md-4 mt-4 btn text-light" style="background:#6387f2;">Save Changes</button>
+            }
+        </>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" centered>
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">Scan The QR Code To Pay</h1>
+                    <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="@paymentDetails?.QRCodeImage" width="350" height="400" />
+                </div>
+                <div class="modal-footer">
+                    @* <button type="button" class="btn btn-condary reg-modal-close" data-bs-dismiss="modal">Close</button> *@
+                    <button type="submit" id="pop-up-submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    var conferenceFees = @Html.Raw(JsonSerializer.Serialize(conferenceFees));
+    var registerationDto = @Html.Raw(JsonSerializer.Serialize(Model));
+    var amount = 0;
+
+    $("#register-form").on("submit", async function (event) {
+        event.preventDefault();
+        var form = document.getElementById("register-form")
+        var formData = new FormData(form)
+        var amountToBePaid = 0
+        var idConferenceFees = []
+
+        conferenceFees.forEach((fees) => {
+            var idConferenceFee = $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked")
+            if (idConferenceFee) {
+                amountToBePaid += fees.Amount
+                idConferenceFees.push(fees.IdConferenceFee)
+            }
+        })
+
+        if (idConferenceFees.length === 0) {
+            swal({
+                title: "",
+                text: "Please select atlease one event!.",
+                icon: "warning",
+            });
+            return;
+        }
+
+        formData.append("amountToBePaid", amountToBePaid)
+        formData.append("idConferenceFee", idConferenceFees.join(","))
+
+        const URL = `/Customer/RegisterMember`
+
+        await fetch(URL, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(response => {
+                swal({
+                    title: "",
+                    text: "Event Registered successfully.",
+                    icon: "success",
+                });
+                window.location.href = localStorage.getItem('location');
+
+            })
+    })
+
+    $("#all-days").on("change", function () {
+        if ($(this).prop("checked")) {
+            $(".checkbox").prop("checked", true)
+            amount = conferenceFees.reduce((accumulator, currentValue) => accumulator + currentValue.Amount, 0)
+            $(".amount").html(`${amount}.00`)
+        }
+    })
+
+    conferenceFees.forEach((fees) => {
+        $(`#conferenceFee-${fees.IdConferenceFee}`).on("change", function () {
+            if ($(this).prop("checked")) {
+                $(`.card`).css("background", "");
+                $(`.checkbox`).prop("checked", false);
+                $(this).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+                amount = fees.Amount
+            } else {
+                amount -= fees.Amount
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "");
+            }
+            $(".amount").html(`${amount}.00`)
+        })
+
+        $(`.conferenceFee-${fees.IdConferenceFee}`).on("click", function () {
+            if (registerationDto.IdRegistration === 0){
+            if (!$(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked")) {
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+                } else {
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", false);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "");
+            }
+            if ($(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked")) {
+                $(`.card`).css("background", "");
+                $(`.checkbox`).prop("checked", false);
+                $(`#conferenceFee-${fees.IdConferenceFee}`).prop("checked", true);
+                $(`.conferenceFee-${fees.IdConferenceFee}`).css("background", "#c8fac5");
+                amount = fees.Amount
+            } else {
+                amount -= fees.Amount
+
+                }
+            $(".amount").html(`${amount}.00`)
+            }
+        })
+    })
+
+    if (Object.keys(registerationDto).length > 0) {
+        if (registerationDto.IdConferenceFee) {
+            registerationDto.IdConferenceFee.split(",").forEach((id) => {
+                $(`#conferenceFee-${id}`).prop("checked", true);
+                $(`.conferenceFee-${id}`).css("background", "#c8fac5");
+            });
+        } else {
+            console.log("IdConferenceFee is null, no checkboxes to check");
+        }
+        const amountToBePaid = registerationDto.AmountToBePaid ?? 0;
+        $(".amount").html(`${amountToBePaid}.00`);
+    }
+    $("#register-form").on("submit", function (event) {
+        event.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+        $('#exampleModal').modal('hide');
+    });
+
+    function validateForm() {
+        var valid = true;
+
+        if ($('#register-form input[name=name]').val().trim() === '') {
+            swal({
+                title: "",
+                text: "Please enter your Full Name.",
+                icon: "warning",
+            });
+            valid = false;
+        }
+
+        if ($('#register-form input[name=emailID]').val().trim() === '') {
+            swal({
+                title: "",
+                text: "Please enter your Email.",
+                icon: "warning",
+            });
+            valid = false;
+        }
+        return valid;
+    }
+
+    $(".amount").html(`${registerationDto.AmountToBePaid ?? '0'}.00`);
+
+</script>

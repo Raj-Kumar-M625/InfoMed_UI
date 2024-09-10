@@ -1,0 +1,18 @@
+﻿@using Newtonsoft.Json
+@{
+    SweetAlertOptions? popupData = null;
+    if (TempData["message"] != null)
+    {
+        popupData = JsonConvert.DeserializeObject<SweetAlertOptions>(TempData["message"] as string);
+    }
+}
+@if (popupData != null)
+{
+    <script>
+        swal({
+            title: "@popupData?.Title",
+            text: "@popupData?.Text",
+            icon: "@popupData?.Icon",
+        })
+    </script>
+}

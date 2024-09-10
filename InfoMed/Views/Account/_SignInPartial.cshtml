@@ -1,0 +1,108 @@
+﻿
+<div class="modal fade register-modal" id="exampleModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-heade">
+                <button type="button" class="close reg-modal-close m-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <img src="~/images/logo.png" class="object-contain modal-title w-[9rem] h-[40px] mx-2" />
+            <div class="modal-body">
+                <div id="carouselExampleControls" class="carousel slide h-50" data-bs-touch="false" data-bs-interval="false" data-bs-wrap="false">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <h5 class="modal-title mt-2 mx-2 fw-bold" id="exampleModalLabel1">Sign In</h5>
+                            <input type="text" placeholder="Enter your email" id="email" class="form-control" />
+                        </div>
+                        <div class="carousel-item">
+                            <h5 class="modal-title mt-2 mx-2 fw-bold" id="exampleModalLabel2">Sent a code to your email.</h5>
+                            <input type="text" id="otp" placeholder="Enter your code" class="form-control" />
+                            <div class="d-flex justify-content-between">
+                            <span class="mx-2" id="error-text" style="font-size:16px;"></span>
+                            <p class="text-primary text-end" id="resend" style="cursor:pointer;">Resend Code</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary reg-modal-close" data-dismiss="modal">Close</button>
+                <button type="button" id="btn-next" class="btn btn-primary" data-bs-target="#carouselExampleControls" data-bs-slide="next">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".reg-modal-close").on('click', function () {
+        $(".register-modal").modal('hide')
+        $("#signIn-container").html("")
+    })
+
+    $("#btn-next").prop('disabled', true)
+    $("#error-text").html("");
+
+    $('.carousel').carousel({
+        interval: false,
+        wrap: false
+    });
+
+    var counter = 0;
+
+    $("#btn-next").on("click", async function () {
+        counter++;
+
+        const email = $("#email").val();
+        if (counter == 1) {
+            $("#btn-next").prop('disabled', true)
+            await fetch(`/Account/SendOtp?email=${email}`, {
+                method: "POST",
+            });
+        } else if (counter >= 2) {
+            const otp = $("#otp").val();
+
+            await fetch(`/Account/VerifyOtp?otp=${otp}`)
+                .then(response => response.json())
+                .then(response => {
+                    if (response.success) {
+                        $('#exampleModal').modal('hide');
+                        window.open(`/Customer/Registeration?email=${email}`, '_blank');
+                    } else {
+                        $("#error-text").addClass('text-danger');
+                        $("#error-text").html("Invalid Code");
+                    }
+                });
+        }
+    })
+
+    $("#email").on('change', function () {
+        var email = $(this).val()
+        if (email.length > 0) {
+            $("#btn-next").prop('disabled', false)
+        } else {
+            $("#btn-next").prop('disabled', true)
+        }
+    })
+
+    $("#otp").on("input", function () {
+        $("#error-text").html("");
+        var otp = $(this).val()
+        if (otp.length > 0) {
+            $("#btn-next").prop('disabled', false)
+        } else {
+            $("#btn-next").prop('disabled', true)
+        }
+    });
+
+    $("#resend").on("click",async function(){
+        $("#btn-next").prop('disabled', true)
+        $('#error-text').removeClass('text-danger');
+        $("#error-text").addClass('text-success');
+        $("#error-text").html("Verification Code Sent");
+        const email = $("#email").val();
+        await fetch(`/Account/SendOtp?email=${email}`, {
+            method: "POST",
+        });
+    })
+</script>

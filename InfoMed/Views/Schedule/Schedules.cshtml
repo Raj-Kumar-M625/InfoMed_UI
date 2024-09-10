@@ -1,0 +1,133 @@
+﻿@using InfoMed.Utils
+@model List<ScheduleMasterDto>;
+@{
+    Session session = new Session(new HttpContextAccessor());
+    int eventId = session.GetEventId();
+    var sessionDetails = ViewBag.sessionUser;
+    string eventStatus = session.GetEventStatus();
+}
+
+<div class="container table-responsive-lg w-[90%]">
+    <div class="d-flex justify-content-between mt-3 mb-4">
+        <h3 class="fs-4 fw-bold">Schedules</h3>
+        @if (sessionDetails.UserRole == "Volunteer")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+                <button class="btn btn-primary" onclick="addScheduleMaster()">Add Schedule</button>
+            }
+        }
+        else if (sessionDetails.UserRole == "Admin")
+        {
+            @if (eventStatus != "Submitted" && eventStatus != "Approved")
+            {
+
+                <button class="btn btn-primary" onclick="addScheduleMaster()">Add Schedule</button>
+            }
+        }
+    </div>
+    <table id="scheduleMasterTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" class="header-center">Day Schedule Name</th>
+                <th scope="row" class="header-center">Day Schedule Details Text</th>
+                <th scope="row" class="header-center">ScheduleDate</th>
+                @if (sessionDetails.UserRole == "Volunteer")
+                {
+                    @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+                    }
+                    else if (eventStatus == "Submitted")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+
+                    }
+                    else if (eventStatus == "Approved")
+                    {
+                        <th scope="row" class="text-center header-center">Action</th>
+
+                    }
+                }else if(sessionDetails.UserRole == "Admin"){
+                    <th scope="row" class="text-center header-center">Action</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model)
+            {
+                <tr>
+                    <td>@item.DayScheduleName</td>
+                    <td>@item.DayScheduleDetailsText</td>
+                    <td>@Convert.ToDateTime(@item.ScheduleDate).ToString("dd-MM-yyyy")</td>
+                    @if (sessionDetails.UserRole == "Volunteer")
+                    {
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm mx-2" onclick="loadScheduleDetails('@item.IdScheduleMaster')">Add or Update schedule details</button>
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editScheduleMaster('@item.IdScheduleMaster')"></i>
+                                <i class="bi bi-trash fs-5 mx-2 cursor-pointer" onclick="deleteScheduleMaster('@item.IdScheduleMaster')"></i>
+                            </td>
+                        }
+                        else if (eventStatus == "Submitted")
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm mx-2" onclick="loadScheduleDetails('@item.IdScheduleMaster')">View schedule details</button>
+                                
+                            </td>
+                        }
+                        else if (eventStatus == "Approved")
+                        {
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm mx-2" onclick="loadScheduleDetails('@item.IdScheduleMaster')">View schedule details</button>
+
+                            </td>
+                        }
+                    }else if(sessionDetails.UserRole == "Admin"){
+
+                        @if (eventStatus != "Submitted" && eventStatus != "Approved")
+                        {
+
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm mx-2" onclick="loadScheduleDetails('@item.IdScheduleMaster')">Add or Update schedule details</button>
+                                <i class="bi bi-pencil-fill fs-5 cursor-pointer" onclick="editScheduleMaster('@item.IdScheduleMaster')"></i>
+                                <i class="bi bi-trash fs-5 mx-2 cursor-pointer" onclick="deleteScheduleMaster('@item.IdScheduleMaster')"></i>
+                            </td>
+                        }
+                        else{
+
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm mx-2" onclick="loadScheduleDetails('@item.IdScheduleMaster')">View schedule details</button>
+
+                            </td>
+
+
+                            }
+
+                                    
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<input type="text" id="idEventVersion" hidden value="@eventId" />
+<div id="content-master"></div>
+
+<script type="text/javascript" src="~/js/Schedule.js" defer></script>
+
+<script>
+    new DataTable('#scheduleMasterTable', {
+        "bScrollCollapse": true,
+        "language": {
+            "lengthMenu": "Show _MENU_ Entries per page" // Customize the text here
+        },
+        "order": [[2, 'asc']],
+        "bPaginate": true,
+        "columnDefs": [           
+            { "width": "25%", "targets": 3 }  // Order Number column
+        ]
+    });
+    $("#dt-length-0").css("margin-right", "8px")
+</script>
